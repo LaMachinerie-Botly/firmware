@@ -15,8 +15,16 @@ void Scott::init(){
   crayon.attach(_pinServo);
   crayon.write(_haut);
   
-  pinMode(pinSwitchDroite, INPUT);
-  pinMode(pinSwitchGauche, INPUT)
+  pinMode(_pinSwitchDroite, INPUT);
+  
+  pinMode(_pinLigneDroite, INPUT);
+  
+  pinMode(_pinLumiereDroite, INPUT);
+ 
+  pinMode(_pinDistDroite, INPUT);
+  pinMode(_pinDistGauche, INPUT);
+  
+  pinMode(_pinIrEmetteur, OUTPUT);
   
   Steppers->setMaxSpeed(900.0);
   Steppers->setSpeed(300.0);
