@@ -16,10 +16,13 @@ void Scott::init(){
   crayon.write(_haut);
   
   pinMode(_pinSwitchDroite, INPUT);
+  pinMode(_pinSwitchGauche, INPUT);
   
   pinMode(_pinLigneDroite, INPUT);
+  pinMode(_pinLigneGauche, INPUT);
   
   pinMode(_pinLumiereDroite, INPUT);
+  pinMode(_pinLumiereGauche, INPUT);
  
   pinMode(_pinDistDroite, INPUT);
   pinMode(_pinDistGauche, INPUT);
