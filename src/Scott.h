@@ -6,6 +6,8 @@
 #define DIY 2 // Version DIY de Scott
 
 #include "ScottSteppers.h"
+
+
 /*****************************************************
  *      	        Constantes utiles                *
  *            Attention calculé seulement            *
@@ -17,19 +19,34 @@
 #define DELTA_ARC 47.5
 
 
+
 /*********************
 	 Dépendance
 *********************/
 #include <Servo.h>
 #include <Arduino.h>
+#include <IRremote.h>
+
+#include <avr/power.h>
+#include <avr/sleep.h>
+#include <avr/interrupt.h>
 
 #include "ScottSteppers.h"
+
+void pin2_isr();
 
 class Scott{
 public:
 
   Servo crayon;
-
+  IRsend irsend; //send with pin 13
+  decode_results results;
+  
+  int pin = 9;
+  IRrecv irrecv = new IRrecv(pin);
+  
+  
+  
   Scott();
   Scott(int version); //Contructeur
 
@@ -38,7 +55,7 @@ public:
   void run();
   
   void stop(long temps);
-
+  void stop();
 
   void gauche(long pas);
 
@@ -93,46 +110,32 @@ public:
 
   void bougerCrayon(int angle);
 
-  unsigned int lectureDistance();
-
-  unsigned int lectureLigne();
-
-  unsigned int lectureLumiere();
-
-  unsigned char lectureContact();
-
+  
+  void isIRDataReceived();
+  void initIRcom();
+  void sonyCode(byte data);
+  bool proximite();
+  int mesureBatterie();
+  void sleepNow();
+  void sleepWakeup();
 
 
 private:
 
   // Pin pour les moteurs pas-à-pas par défaut
-
-  int _pinSwitchDroite = 4 ;
-  int _pinSwitchGauche = 5 ;
-  int _pinLigneDroite = A1 ;
-  int _pinLigneGauche = A0 ;
-  int _pinLumiereDroite = A7 ;
-  int _pinLumiereGauche = A6 ;
-  int _pinDistDroite = A2 ;
-  int _pinDistGauche = A3 ;
-  int _pinIrEmetteur = 2 ;
-  int _pinServo = 3 ;
-
-   ScottSteppers *Steppers;
-
   
-
-  //float DEG_TO_STEP(DEG_TO_RAD*RAD_TO_STEP)
-
-  unsigned int _distD = 0;
-  unsigned int _distG = 0;
+  int _pinServo = 11 ;
+  
+  int _pinTsop = 9;
+  int _pinIrEmetteur = 13 ;
+  int _pinMesureBatterie = A5;
+  ScottSteppers *Steppers;
+   
 
   int tpsEcoule = 0 ;
   int tpsTop = 0 ;
 
-  //Variable capteur de distance
-  int _distDroite;
-  int _distGauche;
+
   
   //Cst crayon
   int _bas = -35;

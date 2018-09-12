@@ -14,15 +14,15 @@
 
 #define MULTISTEPPER_MAX_STEPPERS 2
 
-#define GaucheB2  6       // 
-#define GaucheB1  7      //  Pin Moteur Gauche
-#define GaucheA2  8     //
-#define GaucheA1  9    //
+#define GaucheB2  3       // 
+#define GaucheB1  2      //  Pin Moteur Gauche
+#define GaucheA2  0     //
+#define GaucheA1  1    //
 
-#define DroitB2  10      // 
-#define DroitB1  11     //  Pin Moteur Droit
-#define DroitA2  12    // 
-#define DroitA1  13   // 
+#define DroitB2  6      // 
+#define DroitB1  8     //  Pin Moteur Droit
+#define DroitA2  4   // 
+#define DroitA1  12   // 
 
 
 /*****************************************************
