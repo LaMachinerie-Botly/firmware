@@ -1,5 +1,5 @@
-#ifndef ScottSteppers_h
-#define ScottSteppers_h
+#ifndef BotlySteppers_h
+#define BotlySteppers_h
 
 #include <stdlib.h>
 #if ARDUINO >= 100
@@ -262,16 +262,16 @@ private:
 
 /*****************************************************
  *      	    Déifinition de la classe             *
- *                   ScottSteppers                   *
+ *                   BotlySteppers                   *
  *                                                   *
  *****************************************************/
 
 
  
-class ScottSteppers{
+class BotlySteppers{
 public:
 
-	ScottSteppers();
+	BotlySteppers();
 	
 	bool run();
 	

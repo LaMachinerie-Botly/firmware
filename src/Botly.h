@@ -1,17 +1,17 @@
-#ifndef Scott_h
-#define Scott_h
+#ifndef Botly_h
+#define Botly_h
 #define LIBRARY_VERSION	0.36
 
-#define ORIGINAL 1 // Version de base de Scott
-#define DIY 2 // Version DIY de Scott
+#define ORIGINAL 1 // Version de base de Botly
+#define DIY 2 // Version DIY de Botly
 
-#include "ScottSteppers.h"
+#include "BotlySteppers.h"
 
 
 /*****************************************************
  *      	        Constantes utiles                *
  *            Attention calculé seulement            *
- *   pour les roues et les moteurs du Scott v0.35)   *
+ *   pour les roues et les moteurs du Botly v0.35)   *
  *****************************************************/
   
 #define MM_TO_STEP 26.076  // 13.038 ?
@@ -31,11 +31,11 @@
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 
-#include "ScottSteppers.h"
+#include "BotlySteppers.h"
 
 void pin2_isr();
 
-class Scott{
+class Botly{
 public:
 
   Servo crayon;
@@ -47,8 +47,8 @@ public:
   
   
   
-  Scott();
-  Scott(int version); //Contructeur
+  Botly();
+  Botly(int version); //Contructeur
 
   void init();
 
@@ -129,7 +129,7 @@ private:
   int _pinTsop = 9;
   int _pinIrEmetteur = 13 ;
   int _pinMesureBatterie = A5;
-  ScottSteppers *Steppers;
+  BotlySteppers *Steppers;
    
 
   int tpsEcoule = 0 ;
