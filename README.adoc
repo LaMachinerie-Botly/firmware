@@ -1,4 +1,4 @@
-= Bibliothèque Scott pour plateforme Arduino =
+= Bibliothèque Botly pour plateforme Arduino =
 
 Cette bibliothèque a pour but de faciliter le pilotage du robot Scott
 
