@@ -12,16 +12,30 @@ Botly::Botly(int version){
 
 void Botly::init()
 {
-	analogReference(INTERNAL); //reference analogique 2.56V
-
 	tpsTop = millis();
 	if(version == SCOTT_V4)
 	{
 		crayon.attach(_pinScottServo);
 		crayon.write(_scottHaut);
+
+		pinMode(_pinSwitchDroite, INPUT);
+	  pinMode(_pinSwitchGauche, INPUT);
+
+	  pinMode(_pinLigneDroite, INPUT);
+	  pinMode(_pinLigneGauche, INPUT);
+
+	  pinMode(_pinLumiereDroite, INPUT);
+	  pinMode(_pinLumiereGauche, INPUT);
+
+	  pinMode(_pinDistDroite, INPUT);
+	  pinMode(_pinDistGauche, INPUT);
+
+	  pinMode(_pinIrEmetteur, OUTPUT);
 	}
 	else
 	{
+		analogReference(INTERNAL); //reference analogique 2.56V
+
 		crayon.attach(_pinBotlyServo);
 		crayon.write(_botlyHaut);
 	}
@@ -209,26 +223,39 @@ void Botly::poserCrayon(){
 	}
 }
 
-void Botly::bougerCrayon(int angle){
+void Botly::bougerCrayon(int angle)
+{
 	crayon.write(angle);
 }
 
-void Botly::isIRDataReceived() {
+void Botly::isIRDataReceived()
+{
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+
 	if (irrecv.decode(&results)) {
     Serial.println(results.value, HEX);
     irrecv.resume(); // Receive the next value
     }
 }
 
-void Botly::initIRcom() {
+void Botly::initIRcom()
+{
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+
 	irrecv.enableIRIn(); // Start the receiver
 }
 
-void Botly::sonyCode(byte data) {
+void Botly::sonyCode(byte data)
+{
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+
 	irsend.sendSony(data, 8);
 }
 
-bool Botly::proximite() {
+bool Botly::proximite()
+{
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+
 	for(int i = 0; i <= 384; i++) { //envoie une trame
 		digitalWrite(_pinIrEmetteur, HIGH);
 		delayMicroseconds(13);
@@ -255,6 +282,7 @@ en hardware
 */
 int Botly::mesureBatterie()
 {
+  if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	int mesureAnalogique=analogRead(_pinMesureBatterie);
 	return mesureAnalogique;
@@ -262,20 +290,20 @@ int Botly::mesureBatterie()
 
 void Botly::sleepNow()
 {
-/* In the Atmega32u4 datasheet on page 62
- * there is a list of sleep modes which explains which clocks and
- * wake up sources are available for each sleep mode.
- *
- * In the avr/sleep.h file, the call names of these sleep modus are to be found:
- *
- * The 5 different modes are:
- * SLEEP_MODE_IDLE -the least power savings, wake up on usart
- * SLEEP_MODE_ADC
- * SLEEP_MODE_PWR_SAVE
- * SLEEP_MODE_STANDBY
- * SLEEP_MODE_PWR_DOWN -the most power savings
- */
-
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	/* In the Atmega32u4 datasheet on page 62
+	 * there is a list of sleep modes which explains which clocks and
+	 * wake up sources are available for each sleep mode.
+	 *
+	 * In the avr/sleep.h file, the call names of these sleep modus are to be found:
+	 *
+	 * The 5 different modes are:
+	 * SLEEP_MODE_IDLE -the least power savings, wake up on usart
+	 * SLEEP_MODE_ADC
+	 * SLEEP_MODE_PWR_SAVE
+	 * SLEEP_MODE_STANDBY
+	 * SLEEP_MODE_PWR_DOWN -the most power savings
+	 */
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode is set here
 	sleep_enable(); // enables the sleep in mcucr register,safety bit
 	power_all_disable(); //low power consumption
@@ -287,19 +315,20 @@ void Botly::sleepNow()
 
 void Botly::sleepWakeup()
 {
-/* In the Atmega32u4 datasheet on page 62
- * there is a list of sleep modes which explains which clocks and
- * wake up sources are available for each sleep mode.
- *
- * In the avr/sleep.h file, the call names of these sleep modus are to be found:
- *
- * The 5 different modes are:
- * SLEEP_MODE_IDLE -the least power savings, wake up on usart
- * SLEEP_MODE_ADC
- * SLEEP_MODE_PWR_SAVE
- * SLEEP_MODE_STANDBY
- * SLEEP_MODE_PWR_DOWN -the most power savings
- */
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	/* In the Atmega32u4 datasheet on page 62
+	 * there is a list of sleep modes which explains which clocks and
+	 * wake up sources are available for each sleep mode.
+	 *
+	 * In the avr/sleep.h file, the call names of these sleep modus are to be found:
+	 *
+	 * The 5 different modes are:
+	 * SLEEP_MODE_IDLE -the least power savings, wake up on usart
+	 * SLEEP_MODE_ADC
+	 * SLEEP_MODE_PWR_SAVE
+	 * SLEEP_MODE_STANDBY
+	 * SLEEP_MODE_PWR_DOWN -the most power savings
+	 */
 
 	attachInterrupt(0, pin2_isr,LOW );//wake up on interrupt pin 2 or 3
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode
@@ -328,6 +357,7 @@ void Botly::sleepWakeup()
 //external interrupt routine to wake up controller
 void pin2_isr()
 {
+	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
   sleep_disable();
   detachInterrupt(0);
 }

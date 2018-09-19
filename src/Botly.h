@@ -99,6 +99,28 @@ public:
 
   void bougerCrayon(int angle);
 
+  // ----------------------------
+  // Fonctions dédiées à ScottV4
+  // ----------------------------
+
+  void leverCrayon();
+
+  void poserCrayon();
+
+  void bougerCrayon(int angle);
+
+  unsigned int lectureDistance();
+
+  unsigned int lectureLigne();
+
+  unsigned int lectureLumiere();
+
+  unsigned char lectureContact();
+
+  // ----------------------------
+  // Fonctions dédiées à BotlyV1
+  // ----------------------------
+
   void isIRDataReceived();
 
   void initIRcom();
