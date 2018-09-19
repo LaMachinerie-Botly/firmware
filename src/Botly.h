@@ -103,12 +103,6 @@ public:
   // Fonctions dédiées à ScottV4
   // ----------------------------
 
-  void leverCrayon();
-
-  void poserCrayon();
-
-  void bougerCrayon(int angle);
-
   unsigned int lectureDistance();
 
   unsigned int lectureLigne();
