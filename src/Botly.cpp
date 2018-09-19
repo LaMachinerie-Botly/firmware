@@ -360,14 +360,15 @@ void Botly::sleepWakeup()
 	power_all_enable(); //restore power on peripherals
 }
 
-//class extern
+
+// !!!! Pas utilisé pour le moment
 //external interrupt routine to wake up controller
-void pin2_isr()
-{
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
-  sleep_disable();
-  detachInterrupt(0);
-}
+// void pin2_isr()
+// {
+// 	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
+//   sleep_disable();
+//   detachInterrupt(0);
+// }
 
 
 //--------------------------------------------
