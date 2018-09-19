@@ -372,7 +372,9 @@ void pin2_isr()
 //--------------------------------------------
 
 
-unsigned char Botly::lectureContact(){
+unsigned char Botly::lectureContact()
+{
+	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	return (!digitalRead(_pinSwitchDroite) + 2*(!digitalRead(_pinSwitchGauche)));
 	//  Gauche  |  Droit  ||  Resultat
 	//----------|---------||----------
@@ -382,7 +384,9 @@ unsigned char Botly::lectureContact(){
 	// 2 (2*1)  +    1    ||     3
 }
 
-unsigned int Botly::lectureLumiere(){
+unsigned int Botly::lectureLumiere()
+{
+	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	delayMicroseconds(180);
 
 	unsigned int _LumiereDroite = analogRead(_pinLumiereDroite);
@@ -392,7 +396,9 @@ unsigned int Botly::lectureLumiere(){
 
 }
 
-unsigned int Botly::lectureDistance(){
+unsigned int Botly::lectureDistance()
+{
+	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	digitalWrite(_pinIrEmetteur,HIGH);
 	delayMicroseconds(180);
 
@@ -407,7 +413,9 @@ unsigned int Botly::lectureDistance(){
 	return (_distDroite*100)/(_distGauche + _distDroite);
 }
 
-unsigned int Botly::lectureLigne(){
+unsigned int Botly::lectureLigne()
+{
+	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	digitalWrite(_pinIrEmetteur,HIGH);
 	delayMicroseconds(180);
 	unsigned int _irDroit = analogRead(_pinLigneDroite);
