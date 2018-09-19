@@ -15,8 +15,17 @@ void Botly::init()
 	analogReference(INTERNAL); //reference analogique 2.56V
 
 	tpsTop = millis();
-	crayon.attach(_pinServo);
-	crayon.write(_haut);
+	if(version == SCOTT_V4)
+	{
+		crayon.attach(_pinScottServo);
+		crayon.write(_scottHaut);
+	}
+	else
+	{
+		crayon.attach(_pinBotlyServo);
+		crayon.write(_botlyHaut);
+	}
+
 
 	Steppers->setMaxSpeed(900.0);
 	Steppers->setSpeed(300.0);
@@ -178,11 +187,26 @@ void Botly::arc( float rayon,float angle){
 }
 
 void Botly::leverCrayon(){
-	crayon.write(_haut);
+	if(version == SCOTT_V4)
+	{
+		crayon.write(_scottHaut);
+	}
+	else
+	{
+		crayon.write(_botlyHaut);
+	}
+
 }
 
 void Botly::poserCrayon(){
-	crayon.write(_bas);
+	if(version == SCOTT_V4)
+	{
+		crayon.write(_scottBas);
+	}
+	else
+	{
+		crayon.write(_botlyBas);
+	}
 }
 
 void Botly::bougerCrayon(int angle){

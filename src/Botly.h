@@ -11,7 +11,7 @@
 /*****************************************************
  *      	        Constantes utiles                *
  *            Attention calcul� seulement            *
- *   pour les roues et les moteurs du Botly v0.35)   *
+ *   pour les roues et les moteurs du Svott V4 (V0.35b)   *
  *****************************************************/
 
 #define MM_TO_STEP 26.076
@@ -25,8 +25,8 @@
 *********************/
 #include <Servo.h>
 #include <Arduino.h>
-#include <IRremote.h>
 
+#include <IRremote.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
@@ -39,7 +39,7 @@ class Botly{
 public:
 
   Servo crayon;
-  IRsend irsend; //send with pin 13
+  IRsend irsend;
   decode_results results;
 
   int pin = 9;
@@ -115,21 +115,36 @@ public:
 
 private:
 
-  int _pinServo = 11 ;
+  int _pinBotlyServo= 11  ; // Pin servo pour BotlyV1
+  int _pinScottServo= 3   ; // Pin servo pour ScottV4
+
+  // Définition des pins à partir de la version BotlyV1
   int _pinTsop = 9;
   int _pinIrEmetteur = 13 ;
   int _pinMesureBatterie = A5;
   BotlySteppers *Steppers;
 
+  // Définition des pins à partir de la version ScottV4
+  int _pinSwitchDroite = 4 ;
+  int _pinSwitchGauche = 5 ;
+  int _pinLigneDroite = A1 ;
+  int _pinLigneGauche = A0 ;
+  int _pinLumiereDroite = A7 ;
+  int _pinLumiereGauche = A6 ;
+  int _pinDistDroite = A2 ;
+  int _pinDistGauche = A3 ;
+  int _pinIrEmetteur = 2 ;
 
   int tpsEcoule = 0 ;
   int tpsTop = 0 ;
 
-
+  //Variable capteur de distance
+  int _distDroite;
+  int _distGauche;
 
   //Cst crayon
-  int _bas = -35;
-  int _haut = 10;
+  int _botlyBas = -35; // A modifier
+  int _botlyHaut = 10;
 
   int servoAction = 0;
 
