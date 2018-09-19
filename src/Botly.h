@@ -2,8 +2,8 @@
 #define Botly_h
 #define LIBRARY_VERSION	0.36
 
-#define SCOTT_V4 1 // Version de base de Botly
-#define BOTLY_V1 2 // Version DIY de Botly
+#define SCOTT_V4 1 // Version Scott V4 du robot
+#define BOTLY_V1 2 // Version Botly V1 du robot
 
 #include "BotlySteppers.h"
 
