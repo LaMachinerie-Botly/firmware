@@ -156,14 +156,16 @@ private:
   int tpsEcoule = 0 ;
   int tpsTop = 0 ;
 
-  //Variable capteur de distance
+  // Variable capteur de distance
   int _distDroite;
   int _distGauche;
 
-  //Cst crayon
+  // Variable Crayon
+  // Version Botly
   int _botlyBas = -35; // A modifier
   int _botlyHaut = 10;
 
+  // Version Scott
   int _scottBas = -35; // A modifier
   int _scottHaut = 10;
 

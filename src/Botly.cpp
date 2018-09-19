@@ -8,7 +8,7 @@ Botly::Botly(){
 
 Botly::Botly(int version){
 	Steppers = new BotlySteppers(version);
-	_version = version
+	_version = version;
 }
 
 void Botly::init()
