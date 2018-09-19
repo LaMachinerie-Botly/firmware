@@ -11,13 +11,13 @@ Botly::Botly(int version){
 }
 
 void Botly::init()
-{	
+{
 	analogReference(INTERNAL); //reference analogique 2.56V
-	
+
 	tpsTop = millis();
 	crayon.attach(_pinServo);
 	crayon.write(_haut);
-   
+
 	Steppers->setMaxSpeed(900.0);
 	Steppers->setSpeed(300.0);
 	Steppers->enable();
@@ -90,7 +90,7 @@ void Botly::gauche(long pas){
 	Steppers->moveTo(-pas, -pas);
 	Steppers->runSpeedToPosition();//Blockling...
 	Steppers->setPositions();
-	
+
 }
 
 void Botly::droite(long pas){
@@ -178,26 +178,17 @@ void Botly::arc( float rayon,float angle){
 	Steppers->moveTo(pasD, pasG);
 }
 
-
-
-
 void Botly::leverCrayon(){
 	crayon.write(_haut);
 }
 
-void Botly::poserCrayon(){
+void Botly::descendreCrayon(){
 	crayon.write(_bas);
 }
 
 void Botly::bougerCrayon(int angle){
 	crayon.write(angle);
 }
-
-
-
-
-
-
 
 void Botly::isIRDataReceived() {
 	if (irrecv.decode(&results)) {
@@ -221,14 +212,14 @@ bool Botly::proximite() {
 		digitalWrite(_pinIrEmetteur, LOW);
 		delayMicroseconds(13);
 	}
-	
+
 	if(digitalRead(_pinTsop)==LOW) { //on regarde si le tsop détecte la trame
       return 1;
     }
-	
+
     else {
       return 0;
-    } 
+    }
 }
 
 /*Cette fonction mesure la valeur analogique
@@ -241,7 +232,7 @@ en hardware
 */
 int Botly::mesureBatterie()
 {
-	
+
 	int mesureAnalogique=analogRead(_pinMesureBatterie);
 	return mesureAnalogique;
 }
@@ -302,7 +293,7 @@ void Botly::sleepWakeup()
 	//power_timer3_disable();
 	//power_usart1_disable();
 	//power_usb_disable();
-	
+
 	power_all_disable(); //low power consumption
 	sleep_mode(); // here the device is actually put to sleep!!
 	// THE PROGRAM CONTINUES FROM HERE AFTER WAKING UP
