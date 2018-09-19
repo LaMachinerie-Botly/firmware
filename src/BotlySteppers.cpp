@@ -1,7 +1,7 @@
 #include "BotlySteppers.h"
 
 /*****************************************************
- *      	    Méthodes et Constructeur             *
+ *      	    Méthodes et Constructeur               *
  *                   BotlySteppers                   *
  *                                                   *
  *****************************************************/
@@ -12,27 +12,26 @@ BotlySteppers::BotlySteppers(){
 
 BotlySteppers::BotlySteppers(int version)
 {
-	SStepper droite;
-	SStepper gauche;
-
 	if (version == SCOTT_V4)
 	{
-		droite = new SStepper(ScottDroitB2, ScottDroitA2, ScottDroitB1, ScottDroitA1);
-		gauche = new SStepper(ScottGaucheB2, ScottGaucheA2, ScottGaucheB1, ScottGaucheA1);
+    SStepper droite(ScottDroitB2, ScottDroitA2, ScottDroitB1, ScottDroitA1);
+    SStepper gauche(ScottGaucheB2, ScottGaucheA2, ScottGaucheB1, ScottGaucheA1);
+    _stepperD = droite;
+    _stepperG = gauche;
 	}
-	else
+	if (version == BOTLY_V1)
 	{
-		droite = new SStepper(BotlyDroitB2, BotlyDroitA2, BotlyDroitB1, BotlyDroitA1);
-		gauche = new SStepper(BotlyGaucheB2, BotlyGaucheA2, BotlyGaucheB1, BotlyGaucheA1);
+    SStepper droite(BotlyDroitB2, BotlyDroitA2, BotlyDroitB1, BotlyDroitA1);
+    SStepper gauche(BotlyGaucheB2, BotlyGaucheA2, BotlyGaucheB1, BotlyGaucheA1);
+    _stepperD = droite;
+    _stepperG = gauche;
 	}
-	_stepperD = droite;
-	_stepperG = gauche;
- }
+}
 
-bool BotlySteppers::run(){
+bool BotlySteppers::run()
+{
 	uint8_t i;
-    bool ret = false;
-
+  bool ret = false;
 	if ( _stepperD.distanceToGo() != 0)
 	{
 		_stepperD.runSpeed();
@@ -43,7 +42,6 @@ bool BotlySteppers::run(){
 		_stepperG.runSpeed();
 		ret = true;
 	}
-
     return ret;
 }
 

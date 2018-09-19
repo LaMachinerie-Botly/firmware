@@ -261,7 +261,7 @@ void Botly::sonyCode(byte data)
 
 bool Botly::proximite()
 {
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return 0; // annule la fonction si mauvaise version
 
 	for(int i = 0; i <= 384; i++) { //envoie une trame
 		digitalWrite(_pinBotlyIrEmetteur, HIGH);
@@ -289,7 +289,7 @@ en hardware
 */
 int Botly::mesureBatterie()
 {
-  if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
+  if (_version==SCOTT_V4) return 0; // annule la fonction si mauvaise version
 
 	int mesureAnalogique=analogRead(_pinMesureBatterie);
 	return mesureAnalogique;
@@ -378,7 +378,7 @@ void Botly::sleepWakeup()
 
 unsigned char Botly::lectureContact()
 {
-	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
 	return (!digitalRead(_pinSwitchDroite) + 2*(!digitalRead(_pinSwitchGauche)));
 	//  Gauche  |  Droit  ||  Resultat
 	//----------|---------||----------
@@ -390,7 +390,7 @@ unsigned char Botly::lectureContact()
 
 unsigned int Botly::lectureLumiere()
 {
-	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
 	delayMicroseconds(180);
 
 	unsigned int _LumiereDroite = analogRead(_pinLumiereDroite);
@@ -402,7 +402,7 @@ unsigned int Botly::lectureLumiere()
 
 unsigned int Botly::lectureDistance()
 {
-	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
 	digitalWrite(_pinScottIrEmetteur,HIGH);
 	delayMicroseconds(180);
 
@@ -419,7 +419,7 @@ unsigned int Botly::lectureDistance()
 
 unsigned int Botly::lectureLigne()
 {
-	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
 	digitalWrite(_pinScottIrEmetteur,HIGH);
 	delayMicroseconds(180);
 	unsigned int _irDroit = analogRead(_pinLigneDroite);

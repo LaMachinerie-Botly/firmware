@@ -16,27 +16,27 @@
 
 #define MULTISTEPPER_MAX_STEPPERS 2
 
-// PIN MOTEUR SCOTT ( A partir de la version 4)
-#define ScottGaucheB2  6
-#define ScottGaucheB1  7
-#define ScottGaucheA2  8
-#define ScottGaucheA1  9
-
-#define ScottDroitB2  10
-#define ScottDroitB1  11
-#define ScottDroitA2  12
-#define ScottDroitA1  13
-
-// PIN MOTEUR BOTLY ( A partir de la version 1)
-#define BotlyGaucheB2  3
-#define BotlyGaucheB1  2
-#define BotlyGaucheA2  0
-#define BotlyGaucheA1  1
-
-#define BotlyDroitB2  6
-#define BotlyDroitB1  8
-#define BotlyDroitA2  4
-#define BotlyDroitA1  12
+// // PIN MOTEUR SCOTT ( A partir de la version 4)
+// #define ScottGaucheB2  6
+// #define ScottGaucheB1  7
+// #define ScottGaucheA2  8
+// #define ScottGaucheA1  9
+//
+// #define ScottDroitB2  10
+// #define ScottDroitB1  11
+// #define ScottDroitA2  12
+// #define ScottDroitA1  13
+//
+// // PIN MOTEUR BOTLY ( A partir de la version 1)
+// #define BotlyGaucheB2  3
+// #define BotlyGaucheB1  2
+// #define BotlyGaucheA2  0
+// #define BotlyGaucheA1  1
+//
+// #define BotlyDroitB2  6
+// #define BotlyDroitB1  8
+// #define BotlyDroitA2  4
+// #define BotlyDroitA1  12
 
 
 /*****************************************************
@@ -312,6 +312,15 @@ private:
 
   SStepper _stepperD;
 	SStepper _stepperG;
+
+  // PIN MOTEUR SCOTT ( A partir de la version 4)
+  const uint8_t ScottGaucheB2 = 6, ScottGaucheB1 = 7, ScottGaucheA2 = 8, ScottGaucheA1 = 9 ;
+  const uint8_t ScottDroitB2 = 10, ScottDroitB1 = 11, ScottDroitA2 = 12, ScottDroitA1 = 13 ;
+
+  // PIN MOTEUR BOTLY ( A partir de la version 1)
+  const uint8_t BotlyGaucheB2 = 3, BotlyGaucheB1 = 2, BotlyGaucheA2 = 0, BotlyGaucheA1 = 1 ;
+  const uint8_t BotlyDroitB2 = 6, BotlyDroitB1 = 8, BotlyDroitA2 = 4, BotlyDroitA1 = 12 ;
+
 };
 
 
