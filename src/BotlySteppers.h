@@ -14,15 +14,27 @@
 
 #define MULTISTEPPER_MAX_STEPPERS 2
 
-#define GaucheB2  3       // 
-#define GaucheB1  2      //  Pin Moteur Gauche
-#define GaucheA2  0     //
-#define GaucheA1  1    //
+// PIN MOTEUR SCOTT ( A partir de la version 4)
+#define ScottGaucheB2  6
+#define ScottGaucheB1  7
+#define ScottGaucheA2  8
+#define ScottGaucheA1  9
 
-#define DroitB2  6      // 
-#define DroitB1  8     //  Pin Moteur Droit
-#define DroitA2  4   // 
-#define DroitA1  12   // 
+#define ScottDroitB2  10
+#define ScottDroitB1  11
+#define ScottDroitA2  12
+#define ScottDroitA1  13
+
+// PIN MOTEUR BOTLY ( A partir de la version 1)
+#define BotlyGaucheB2  3
+#define BotlyGaucheB1  2
+#define BotlyGaucheA2  0
+#define BotlyGaucheA1  1
+
+#define BotlyDroitB2  6
+#define BotlyDroitB1  8
+#define BotlyDroitA2  4
+#define BotlyDroitA1  12   
 
 
 /*****************************************************
@@ -192,11 +204,11 @@ protected:
 
     virtual void   step(long step);
 
-   
+
     boolean _direction; // 1 == CW
 
 private:
-   
+
     /// Arduino pin number assignments for the 2 or 4 pins required to interface to the
     /// stepper motor or driver
     uint8_t        _pin[4];
@@ -267,29 +279,29 @@ private:
  *****************************************************/
 
 
- 
+
 class BotlySteppers{
 public:
 
 	BotlySteppers();
-	
+
 	bool run();
-	
+
 	void move(long relativeD, long relativeG);
 	void moveTo(long absoluteD, long absoluteG);
-	
+
 	void runSpeedToPosition();
 	void setPositions();
-	
+
 	void setSpeed(float vitesse);
 	void setSpeed(float vitesseDroite, float vitesseGauche);
 
 	void setMaxSpeed(float vitesse);
 	void setMaxSpeed(float vitesseDroite, float vitesseGauche);
-	
+
 	float getMaxSpeed(int i);
 	float getSpeed(int i);
-	
+
 	void disable();
 	void enable();
 
