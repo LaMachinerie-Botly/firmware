@@ -131,6 +131,8 @@ public:
 
 private:
 
+  int _version = 1;
+
   int _pinBotlyServo= 11  ; // Pin servo pour BotlyV1
   int _pinScottServo= 3   ; // Pin servo pour ScottV4
 
@@ -161,6 +163,9 @@ private:
   //Cst crayon
   int _botlyBas = -35; // A modifier
   int _botlyHaut = 10;
+
+  int _scottBas = -35; // A modifier
+  int _scottHaut = 10;
 
   int servoAction = 0;
 

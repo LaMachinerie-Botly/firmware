@@ -8,12 +8,13 @@ Botly::Botly(){
 
 Botly::Botly(int version){
 	Steppers = new BotlySteppers(version);
+	_version = version
 }
 
 void Botly::init()
 {
 	tpsTop = millis();
-	if(version == SCOTT_V4)
+	if(_version == SCOTT_V4)
 	{
 		crayon.attach(_pinScottServo);
 		crayon.write(_scottHaut);
@@ -203,7 +204,7 @@ void Botly::arc( float rayon,float angle){
 }
 
 void Botly::leverCrayon(){
-	if(version == SCOTT_V4)
+	if(_version == SCOTT_V4)
 	{
 		crayon.write(_scottHaut);
 	}
@@ -215,7 +216,7 @@ void Botly::leverCrayon(){
 }
 
 void Botly::poserCrayon(){
-	if(version == SCOTT_V4)
+	if(_version == SCOTT_V4)
 	{
 		crayon.write(_scottBas);
 	}
@@ -236,7 +237,7 @@ void Botly::bougerCrayon(int angle)
 
 void Botly::isIRDataReceived()
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	if (irrecv.decode(&results)) {
     Serial.println(results.value, HEX);
@@ -246,21 +247,21 @@ void Botly::isIRDataReceived()
 
 void Botly::initIRcom()
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	irrecv.enableIRIn(); // Start the receiver
 }
 
 void Botly::sonyCode(byte data)
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	irsend.sendSony(data, 8);
 }
 
 bool Botly::proximite()
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	for(int i = 0; i <= 384; i++) { //envoie une trame
 		digitalWrite(_pinBotlyIrEmetteur, HIGH);
@@ -288,7 +289,7 @@ en hardware
 */
 int Botly::mesureBatterie()
 {
-  if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+  if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	int mesureAnalogique=analogRead(_pinMesureBatterie);
 	return mesureAnalogique;
@@ -296,7 +297,7 @@ int Botly::mesureBatterie()
 
 void Botly::sleepNow()
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 	/* In the Atmega32u4 datasheet on page 62
 	 * there is a list of sleep modes which explains which clocks and
 	 * wake up sources are available for each sleep mode.
@@ -321,7 +322,7 @@ void Botly::sleepNow()
 
 void Botly::sleepWakeup()
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 	/* In the Atmega32u4 datasheet on page 62
 	 * there is a list of sleep modes which explains which clocks and
 	 * wake up sources are available for each sleep mode.
@@ -363,7 +364,7 @@ void Botly::sleepWakeup()
 //external interrupt routine to wake up controller
 void pin2_isr()
 {
-	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
+	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
   sleep_disable();
   detachInterrupt(0);
 }
@@ -376,7 +377,7 @@ void pin2_isr()
 
 unsigned char Botly::lectureContact()
 {
-	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	return (!digitalRead(_pinSwitchDroite) + 2*(!digitalRead(_pinSwitchGauche)));
 	//  Gauche  |  Droit  ||  Resultat
 	//----------|---------||----------
@@ -388,7 +389,7 @@ unsigned char Botly::lectureContact()
 
 unsigned int Botly::lectureLumiere()
 {
-	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	delayMicroseconds(180);
 
 	unsigned int _LumiereDroite = analogRead(_pinLumiereDroite);
@@ -400,7 +401,7 @@ unsigned int Botly::lectureLumiere()
 
 unsigned int Botly::lectureDistance()
 {
-	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	digitalWrite(_pinScottIrEmetteur,HIGH);
 	delayMicroseconds(180);
 
@@ -417,7 +418,7 @@ unsigned int Botly::lectureDistance()
 
 unsigned int Botly::lectureLigne()
 {
-	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
+	if (_version==BOTLY_V1) return; // annule la fonction si mauvaise version
 	digitalWrite(_pinScottIrEmetteur,HIGH);
 	delayMicroseconds(180);
 	unsigned int _irDroit = analogRead(_pinLigneDroite);
