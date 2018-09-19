@@ -3,7 +3,7 @@
 
 
 Botly::Botly(){
-	Botly(DEFAULT);
+	Botly(SCOTT_V4);
 }
 
 Botly::Botly(int version){
