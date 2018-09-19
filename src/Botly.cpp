@@ -228,6 +228,10 @@ void Botly::bougerCrayon(int angle)
 	crayon.write(angle);
 }
 
+//--------------------------------------------
+// Fonctions pour la version BOTLY V1 du robot
+//--------------------------------------------
+
 void Botly::isIRDataReceived()
 {
 	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
@@ -360,4 +364,59 @@ void pin2_isr()
 	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
   sleep_disable();
   detachInterrupt(0);
+}
+
+
+//--------------------------------------------
+// Fonctions pour la version SCOTT V4 du robot
+//--------------------------------------------
+
+
+unsigned char Botly::lectureContact(){
+	return (!digitalRead(_pinSwitchDroite) + 2*(!digitalRead(_pinSwitchGauche)));
+	//  Gauche  |  Droit  ||  Resultat
+	//----------|---------||----------
+	//    0     +    0    ||     0
+	//    0     +    1    ||     1
+	// 2 (2*1)  +    0    ||     2
+	// 2 (2*1)  +    1    ||     3
+}
+
+unsigned int Botly::lectureLumiere(){
+	delayMicroseconds(180);
+
+	unsigned int _LumiereDroite = analogRead(_pinLumiereDroite);
+	unsigned int _LumiereGauche = analogRead(_pinLumiereGauche);
+
+	return (_LumiereDroite*100)/(_LumiereGauche + _LumiereDroite);
+
+}
+
+unsigned int Botly::lectureDistance(){
+	digitalWrite(_pinIrEmetteur,HIGH);
+	delayMicroseconds(180);
+
+	_distDroite = analogRead(_pinDistDroite);
+	_distGauche = analogRead(_pinDistGauche);
+
+	digitalWrite(_pinIrEmetteur,LOW);
+	delayMicroseconds(180);
+	_distDroite -= analogRead(_pinDistDroite);
+	_distGauche -= analogRead(_pinDistGauche);
+
+	return (_distDroite*100)/(_distGauche + _distDroite);
+}
+
+unsigned int Botly::lectureLigne(){
+	digitalWrite(_pinIrEmetteur,HIGH);
+	delayMicroseconds(180);
+	unsigned int _irDroit = analogRead(_pinLigneDroite);
+	unsigned int _irGauche = analogRead(_pinLigneGauche);
+
+	digitalWrite(_pinIrEmetteur,LOW);
+	delayMicroseconds(180);
+	_irDroit -= analogRead(_pinLigneDroite);
+	_irGauche -= analogRead(_pinLigneGauche);
+
+	return (_irDroit*100)/(_irGauche + _irDroit);
 }
