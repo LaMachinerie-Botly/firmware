@@ -13,13 +13,13 @@ BotlySteppers::BotlySteppers(){
 BotlySteppers::BotlySteppers(int version){
 	if (version == SCOTT_V4)
 	{
-		SStepper droite(ScottDroitB2, ScottDroitA2, ScottDroitB1, ScottDroitA1);
-		SStepper gauche(ScottGaucheB2, ScottGaucheA2, ScottGaucheB1, ScottGaucheA1);
+		SStepper droite = new SStepper(ScottDroitB2, ScottDroitA2, ScottDroitB1, ScottDroitA1);
+		SStepper gauche = new SStepper(ScottGaucheB2, ScottGaucheA2, ScottGaucheB1, ScottGaucheA1);
 	}
 	else
 	{
-		SStepper droite(BotlyDroitB2, BotlyDroitA2, BotlyDroitB1, BotlyDroitA1);
-		SStepper gauche(BotlyGaucheB2, BotlyGaucheA2, BotlyGaucheB1, BotlyGaucheA1);
+		SStepper droite = new SStepper(BotlyDroitB2, BotlyDroitA2, BotlyDroitB1, BotlyDroitA1);
+		SStepper gauche = new SStepper(BotlyGaucheB2, BotlyGaucheA2, BotlyGaucheB1, BotlyGaucheA1);
 	}
 	_stepperD = droite;
 	_stepperG = gauche;
