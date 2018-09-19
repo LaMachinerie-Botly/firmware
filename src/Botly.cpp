@@ -30,7 +30,7 @@ void Botly::init()
 	  pinMode(_pinDistDroite, INPUT);
 	  pinMode(_pinDistGauche, INPUT);
 
-	  pinMode(_pinIrEmetteur, OUTPUT);
+	  pinMode(_pinScottIrEmetteur, OUTPUT);
 	}
 	else
 	{
@@ -38,6 +38,8 @@ void Botly::init()
 
 		crayon.attach(_pinBotlyServo);
 		crayon.write(_botlyHaut);
+
+		pinMode(_pinBotlyIrEmetteur, OUTPUT);
 	}
 
 
