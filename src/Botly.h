@@ -95,7 +95,7 @@ public:
 
   void leverCrayon();
 
-  void descendreCrayon();
+  void poserCrayon();
 
   void bougerCrayon(int angle);
 

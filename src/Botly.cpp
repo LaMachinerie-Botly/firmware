@@ -118,7 +118,6 @@ void Botly::stop(){
 	Steppers->disable();
 }
 
-
 void Botly::tournerGauche(long angleDegree){
 	gauche(long((angleDegree * DEG_TO_RAD * RAD_TO_STEP)));
 }
@@ -182,7 +181,7 @@ void Botly::leverCrayon(){
 	crayon.write(_haut);
 }
 
-void Botly::descendreCrayon(){
+void Botly::poserCrayon(){
 	crayon.write(_bas);
 }
 
