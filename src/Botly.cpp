@@ -7,7 +7,7 @@ Botly::Botly(){
 }
 
 Botly::Botly(int version){
-	Steppers = new BotlySteppers();
+	Steppers = new BotlySteppers(version);
 }
 
 void Botly::init()

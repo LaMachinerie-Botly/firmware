@@ -11,6 +11,8 @@
 
 #undef round
 
+#define SCOTT_V4 1 // Version de base de Botly
+#define BOTLY_V1 2 // Version DIY de Botly
 
 #define MULTISTEPPER_MAX_STEPPERS 2
 
@@ -34,7 +36,7 @@
 #define BotlyDroitB2  6
 #define BotlyDroitB1  8
 #define BotlyDroitA2  4
-#define BotlyDroitA1  12   
+#define BotlyDroitA1  12
 
 
 /*****************************************************
@@ -284,6 +286,7 @@ class BotlySteppers{
 public:
 
 	BotlySteppers();
+  BotlySteppers(int version);
 
 	bool run();
 
