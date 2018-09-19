@@ -136,7 +136,7 @@ private:
 
   // Définition des pins à partir de la version BotlyV1
   int _pinTsop = 9;
-  int _pinIrEmetteur = 13 ;
+  int _pinBotlyIrEmetteur = 13 ;
   int _pinMesureBatterie = A5;
   BotlySteppers *Steppers;
 
@@ -149,7 +149,7 @@ private:
   int _pinLumiereGauche = A6 ;
   int _pinDistDroite = A2 ;
   int _pinDistGauche = A3 ;
-  int _pinIrEmetteur = 2 ;
+  int _pinScottIrEmetteur = 2 ;
 
   int tpsEcoule = 0 ;
   int tpsTop = 0 ;

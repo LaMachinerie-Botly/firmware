@@ -261,9 +261,9 @@ bool Botly::proximite()
 	if (version==SCOTT_V4) return; // annule la fonction si mauvaise version
 
 	for(int i = 0; i <= 384; i++) { //envoie une trame
-		digitalWrite(_pinIrEmetteur, HIGH);
+		digitalWrite(_pinBotlyIrEmetteur, HIGH);
 		delayMicroseconds(13);
-		digitalWrite(_pinIrEmetteur, LOW);
+		digitalWrite(_pinBotlyIrEmetteur, LOW);
 		delayMicroseconds(13);
 	}
 
@@ -399,13 +399,13 @@ unsigned int Botly::lectureLumiere()
 unsigned int Botly::lectureDistance()
 {
 	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
-	digitalWrite(_pinIrEmetteur,HIGH);
+	digitalWrite(_pinScottIrEmetteur,HIGH);
 	delayMicroseconds(180);
 
 	_distDroite = analogRead(_pinDistDroite);
 	_distGauche = analogRead(_pinDistGauche);
 
-	digitalWrite(_pinIrEmetteur,LOW);
+	digitalWrite(_pinScottIrEmetteur,LOW);
 	delayMicroseconds(180);
 	_distDroite -= analogRead(_pinDistDroite);
 	_distGauche -= analogRead(_pinDistGauche);
@@ -416,12 +416,12 @@ unsigned int Botly::lectureDistance()
 unsigned int Botly::lectureLigne()
 {
 	if (version==BOTLY_V1) return; // annule la fonction si mauvaise version
-	digitalWrite(_pinIrEmetteur,HIGH);
+	digitalWrite(_pinScottIrEmetteur,HIGH);
 	delayMicroseconds(180);
 	unsigned int _irDroit = analogRead(_pinLigneDroite);
 	unsigned int _irGauche = analogRead(_pinLigneGauche);
 
-	digitalWrite(_pinIrEmetteur,LOW);
+	digitalWrite(_pinScottIrEmetteur,LOW);
 	delayMicroseconds(180);
 	_irDroit -= analogRead(_pinLigneDroite);
 	_irGauche -= analogRead(_pinLigneGauche);
