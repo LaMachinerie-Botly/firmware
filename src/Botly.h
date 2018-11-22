@@ -1,6 +1,22 @@
+/*
+.--.       .  .           .--.      .          .
+|   )     _|_ |           |   )     |         _|_
+|--:  .-.  |  | .  . ____ |--'  .-. |.-.  .-.  |
+|   )(   ) |  | |  |      |  \ (   )|   )(   ) |
+'--'  `-'  `-'`-`--|      '   ` `-' '`-'  `-'  `-'
+                   ;
+                `-'
+* [foo description]
+* Librairie principale des robots Botly et Scott
+* @date         2018-11-22
+* @author       Jules T. / Adrien B. / Alexandre P.
+* @entreprise   La Machinerie
+* @version      V2.0.3
+*/
+
 #ifndef Botly_h
 #define Botly_h
-#define LIBRARY_VERSION	0.36
+#define LIBRARY_VERSION	2.0.3
 
 #define SCOTT_V4 1 // Version Scott V4 du robot
 #define BOTLY_V1 2 // Version Botly V1 du robot
@@ -8,20 +24,21 @@
 #include "BotlySteppers.h"
 
 
-/*****************************************************
- *      	        Constantes utiles                *
- *            Attention calcul� seulement            *
- *   pour les roues et les moteurs du Svott V4 (V0.35b)   *
- *****************************************************/
+/*********************************
+     Constantes de calibrations
+ *********************************/
 
-#define MM_TO_STEP 26.076
-#define RAD_TO_STEP 1210
-#define DELTA_ARC 47.5
+#define SCOTT_MM_TO_STEP 260.76
+#define SCOTT_RAD_TO_STEP 1210
+#define SCOTT_DELTA_ARC 47.5
 
+#define BOTLY_MM_TO_STEP 345
+#define BOTLY_RAD_TO_STEP 1861
+#define BOTLY_DELTA_ARC 47
 
 
 /*********************
-	 D�pendance
+	 Dependances
 *********************/
 #include <Servo.h>
 #include <Arduino.h>
@@ -51,6 +68,8 @@ public:
 
   void init();
 
+  void setCalibration(int distance, int rotation);
+
   void run();
 
   void stop(long temps);
@@ -79,9 +98,9 @@ public:
 
   void logSpeed();
 
-  void turnGo(float angle, int ligne);
+  void turnGo(float angle, long ligne);
 
-  void turnGoDegree(float angle, int ligne);
+  void turnGoDegree(float angle, long ligne);
 
   void polygone(unsigned int nbrCote, unsigned int longueur);
 
@@ -121,7 +140,7 @@ public:
 
   void sonyCode(byte data);
 
-  bool proximite();
+  bool proximite(int i = 10, int seuil = 5);
 
   int mesureBatterie();
 
@@ -140,6 +159,7 @@ private:
   int _pinTsop = 9;
   int _pinBotlyIrEmetteur = 13 ;
   int _pinMesureBatterie = A5;
+  int _pinBuzzer = 7;
   BotlySteppers *Steppers;
 
   // Définition des pins à partir de la version ScottV4
@@ -153,21 +173,23 @@ private:
   int _pinDistGauche = A3 ;
   int _pinScottIrEmetteur = 2 ;
 
-  int tpsEcoule = 0 ;
-  int tpsTop = 0 ;
-
   // Variable capteur de distance
   int _distDroite;
   int _distGauche;
 
   // Variable Crayon
   // Version Botly
-  int _botlyBas = -35; // A modifier
-  int _botlyHaut = 10;
+  int _botlyBas = 90;
+  int _botlyHaut = 50;
 
   // Version Scott
   int _scottBas = -35; // A modifier
   int _scottHaut = 10;
+
+  // Variables de calibration des deplacements
+  int _mmToStep = 0;
+  int _radToStep = 0;
+  int _deltaArc = 0;
 
   int servoAction = 0;
 
