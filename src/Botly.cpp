@@ -47,21 +47,21 @@ void Botly::init()
 
 		setCalibration(BOTLY_MM_TO_STEP, BOTLY_RAD_TO_STEP);
 		_deltaArc = BOTLY_DELTA_ARC;
+
+		//Jouer un son de demarrage
+		delay(500);
+		tone(_pinBuzzer, 1397-33, 100);
+		delay(110);
+		tone(_pinBuzzer, 1568-33, 250);
+		delay(300);
+		tone(_pinBuzzer, 2093-33, 500);
+		delay(500);
 	}
 
 
 	Steppers->setMaxSpeed(900.0);
 	Steppers->setSpeed(300.0);
 	Steppers->enable();
-
-	//Jouer un son de demarrage
-	delay(500);
-	tone(_pinBuzzer, 1397-33, 100);
-	delay(110);
-	tone(_pinBuzzer, 1568-33, 250);
-	delay(300);
-	tone(_pinBuzzer, 2093-33, 500);
-	delay(500);
 
 }
 
