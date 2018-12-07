@@ -21,8 +21,8 @@ BotlySteppers::BotlySteppers(int version)
 	}
 	if (version == BOTLY_V1)
 	{
-    SStepper droite(BotlyDroitB1, BotlyDroitA1, BotlyDroitB2, BotlyDroitA2);
-    SStepper gauche(BotlyGaucheB1, BotlyGaucheA1, BotlyGaucheB2, BotlyGaucheA2);
+    SStepper droite(BotlyDroitB2, BotlyDroitA2, BotlyDroitB1, BotlyDroitA1);
+    SStepper gauche(BotlyGaucheB2, BotlyGaucheA2, BotlyGaucheB1, BotlyGaucheA1);
     _stepperD = droite;
     _stepperG = gauche;
 	}
