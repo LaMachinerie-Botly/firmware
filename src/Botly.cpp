@@ -3,62 +3,31 @@
 
 
 Botly::Botly(){
-	Botly(SCOTT_V4);
-}
-
-Botly::Botly(int version){
-	Steppers = new BotlySteppers(version);
-	_version = version;
+	Steppers = new BotlySteppers();
 }
 
 void Botly::init()
 {
-	if(_version == SCOTT_V4)
-	{
-		crayon.attach(_pinScottServo);
-		crayon.write(_scottHaut);
+	analogReference(INTERNAL); //reference analogique 2.56V
 
-		pinMode(_pinSwitchDroite, INPUT);
-	  pinMode(_pinSwitchGauche, INPUT);
+	crayon.attach(_pinBotlyServo);
+	crayon.write(_botlyHaut);
 
-	  pinMode(_pinLigneDroite, INPUT);
-	  pinMode(_pinLigneGauche, INPUT);
+	pinMode(_pinBotlyIrEmetteur, OUTPUT);
+	digitalWrite(_pinBotlyIrEmetteur, LOW);
 
-	  pinMode(_pinLumiereDroite, INPUT);
-	  pinMode(_pinLumiereGauche, INPUT);
+	setCalibration(BOTLY_MM_TO_STEP, BOTLY_RAD_TO_STEP);
+	_deltaArc = BOTLY_DELTA_ARC;
 
-	  pinMode(_pinDistDroite, INPUT);
-	  pinMode(_pinDistGauche, INPUT);
-
-	  pinMode(_pinScottIrEmetteur, OUTPUT);
-
-		setCalibration(SCOTT_MM_TO_STEP, SCOTT_RAD_TO_STEP);
-		_deltaArc = SCOTT_DELTA_ARC;
-	}
-	else
-	{
-		analogReference(INTERNAL); //reference analogique 2.56V
-
-		crayon.attach(_pinBotlyServo);
-		crayon.write(_botlyHaut);
-
-		pinMode(_pinBotlyIrEmetteur, OUTPUT);
-		digitalWrite(_pinBotlyIrEmetteur, LOW);
-
-		setCalibration(BOTLY_MM_TO_STEP, BOTLY_RAD_TO_STEP);
-		_deltaArc = BOTLY_DELTA_ARC;
-
-		//Jouer un son de demarrage
-		delay(500);
-		tone(_pinBuzzer, 1397-33, 100);
-		delay(110);
-		tone(_pinBuzzer, 1568-33, 250);
-		delay(300);
-		tone(_pinBuzzer, 2093-33, 500);
-		delay(500);
-	}
-
-
+	//Jouer un son de demarrage
+	delay(500);
+	tone(_pinBuzzer, 1397-33, 100);
+	delay(110);
+	tone(_pinBuzzer, 1568-33, 250);
+	delay(300);
+	tone(_pinBuzzer, 2093-33, 500);
+	delay(500);
+	
 	Steppers->setMaxSpeed(900.0);
 	Steppers->setSpeed(300.0);
 	Steppers->enable();
@@ -224,25 +193,11 @@ void Botly::arc( float rayon,float angle){
 }
 
 void Botly::leverCrayon(){
-	if(_version == SCOTT_V4)
-	{
-		crayon.write(_scottHaut);
-	}
-	else
-	{
-		crayon.write(_botlyHaut);
-	}
+	crayon.write(_botlyHaut);
 }
 
 void Botly::poserCrayon(){
-	if(_version == SCOTT_V4)
-	{
-		crayon.write(_scottBas);
-	}
-	else
-	{
-		crayon.write(_botlyBas);
-	}
+	crayon.write(_botlyBas);
 }
 
 void Botly::bougerCrayon(int angle)
@@ -255,8 +210,6 @@ void Botly::bougerCrayon(int angle)
 //--------------------------------------------
 
 void Botly::isIRDataReceived(){
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
-
 	if (irrecv.decode(&results)) {
     Serial.println(results.value, HEX);
     irrecv.resume(); // Receive the next value
@@ -264,14 +217,10 @@ void Botly::isIRDataReceived(){
 }
 
 void Botly::initIRcom(){
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
-
 	irrecv.enableIRIn(); // Start the receiver
 }
 
 void Botly::sonyCode(byte data){
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
-
 	irsend.sendSony(data, 8);
 }
 
@@ -279,8 +228,6 @@ void Botly::sonyCode(byte data){
 bool Botly::proximite(int ite, int trigger)
 {
 	int validDetection = 0;
-	if (_version==SCOTT_V4) return 0; // Annule la fonction si mauvaise version du robot
-
 	trigger = (trigger > ite) ? ite : trigger ;
 
 	for (int k = 0; k<= ite; k++)
@@ -317,15 +264,12 @@ en hardware
 */
 int Botly::mesureBatterie()
 {
-  if (_version==SCOTT_V4) return 0; // annule la fonction si mauvaise version
-
 	int mesureAnalogique=analogRead(_pinMesureBatterie);
 	return mesureAnalogique;
 }
 
 void Botly::sleepNow()
 {
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 	/* In the Atmega32u4 datasheet on page 62
 	 * there is a list of sleep modes which explains which clocks and
 	 * wake up sources are available for each sleep mode.
@@ -350,7 +294,6 @@ void Botly::sleepNow()
 
 void Botly::sleepWakeup()
 {
-	if (_version==SCOTT_V4) return; // annule la fonction si mauvaise version
 	/* In the Atmega32u4 datasheet on page 62
 	 * there is a list of sleep modes which explains which clocks and
 	 * wake up sources are available for each sleep mode.
@@ -397,66 +340,3 @@ void Botly::sleepWakeup()
 //   sleep_disable();
 //   detachInterrupt(0);
 // }
-
-
-//--------------------------------------------
-// Fonctions pour la version SCOTT V4 du robot
-//--------------------------------------------
-
-
-unsigned char Botly::lectureContact()
-{
-	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
-	return (!digitalRead(_pinSwitchDroite) + 2*(!digitalRead(_pinSwitchGauche)));
-	//  Gauche  |  Droit  ||  Resultat
-	//----------|---------||----------
-	//    0     +    0    ||     0
-	//    0     +    1    ||     1
-	// 2 (2*1)  +    0    ||     2
-	// 2 (2*1)  +    1    ||     3
-}
-
-unsigned int Botly::lectureLumiere()
-{
-	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
-	delayMicroseconds(180);
-
-	unsigned int _LumiereDroite = analogRead(_pinLumiereDroite);
-	unsigned int _LumiereGauche = analogRead(_pinLumiereGauche);
-
-	return (_LumiereDroite*100)/(_LumiereGauche + _LumiereDroite);
-
-}
-
-unsigned int Botly::lectureDistance()
-{
-	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
-	digitalWrite(_pinScottIrEmetteur,HIGH);
-	delayMicroseconds(180);
-
-	_distDroite = analogRead(_pinDistDroite);
-	_distGauche = analogRead(_pinDistGauche);
-
-	digitalWrite(_pinScottIrEmetteur,LOW);
-	delayMicroseconds(180);
-	_distDroite -= analogRead(_pinDistDroite);
-	_distGauche -= analogRead(_pinDistGauche);
-
-	return (_distDroite*100)/(_distGauche + _distDroite);
-}
-
-unsigned int Botly::lectureLigne()
-{
-	if (_version==BOTLY_V1) return 0; // annule la fonction si mauvaise version
-	digitalWrite(_pinScottIrEmetteur,HIGH);
-	delayMicroseconds(180);
-	unsigned int _irDroit = analogRead(_pinLigneDroite);
-	unsigned int _irGauche = analogRead(_pinLigneGauche);
-
-	digitalWrite(_pinScottIrEmetteur,LOW);
-	delayMicroseconds(180);
-	_irDroit -= analogRead(_pinLigneDroite);
-	_irGauche -= analogRead(_pinLigneGauche);
-
-	return (_irDroit*100)/(_irGauche + _irDroit);
-}
