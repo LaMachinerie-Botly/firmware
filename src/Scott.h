@@ -1,29 +1,41 @@
-#ifndef Scott_h
-#define Scott_h
-#define LIBRARY_VERSION	0.36
+/*
+.--.       .  .           .--.      .          .
+|   )     _|_ |           |   )     |         _|_
+|--:  .-.  |  | .  . ____ |--'  .-. |.-.  .-.  |
+|   )(   ) |  | |  |      |  \ (   )|   )(   ) |
+'--'  `-'  `-'`-`--|      '   ` `-' '`-'  `-'  `-'
+                   ;
+                `-'
+* [foo description]
+* Librairie principale des robots Botly et Scott
+* @date         2018-11-22
+* @author       Jules T. / Adrien B. / Alexandre P.
+* @entreprise   La Machinerie
+* @version      V2.0.3
+*/
 
-#define ORIGINAL 1 // Version de base de Scott
-#define DIY 2 // Version DIY de Scott
+#ifndef Botly_h
+#define Botly_h
+#define LIBRARY_VERSION	2.0.3
 
-#include "ScottSteppers.h"
-/*****************************************************
- *      	        Constantes utiles                *
- *            Attention calculé seulement            *
- *   pour les roues et les moteurs du Scott v0.35)   *
- *****************************************************/
-  
-#define MM_TO_STEP 26.076  // 13.038 ?
-#define RAD_TO_STEP 1210//6175
-#define DELTA_ARC 47.5
+/*********************************
+     Constantes de calibrations
+ *********************************/
+
+#define SCOTT_MM_TO_STEP 260.76
+#define SCOTT_RAD_TO_STEP 1210
+#define SCOTT_DELTA_ARC 47.5
 
 
 /*********************
-	 Dépendance
+	 Dependances
 *********************/
 #include <Servo.h>
 #include <Arduino.h>
 
 #include "ScottSteppers.h"
+
+void pin2_isr();
 
 class Scott{
 public:
@@ -31,49 +43,44 @@ public:
   Servo crayon;
 
   Scott();
-  Scott(int version); //Contructeur
+
+  Scott(int version);
 
   void init();
 
+  void setCalibration(int distance, int rotation);
+
   void run();
-  
+
   void stop(long temps);
 
+  void stop();
 
   void gauche(long pas);
 
   void tournerGauche(long angleDegree);
 
-
   void droite(long pas);
 
   void tournerDroite(long angleDegree);
-
 
   void avant(long pas);
 
   void avancer(long distanceMillimeter);
 
-
   void arriere(long pas);
 
   void reculer(long distanceMillimeter);
 
-
-
   void setSpeed(float vitesse);
+
   void setSpeed(float vitesseD, float vitesseG);
 
   void logSpeed();
-  
 
-  void turnGo(float angle, int ligne);
+  void turnGo(float angle, long ligne);
 
-  void turnGoDegree(float angle, int ligne);
-
-  //void turnGo();
-
-
+  void turnGoDegree(float angle, long ligne);
 
   void polygone(unsigned int nbrCote, unsigned int longueur);
 
@@ -85,13 +92,15 @@ public:
 
   void arc(float rayon,float angle);
 
-  
-
   void leverCrayon();
 
   void poserCrayon();
 
   void bougerCrayon(int angle);
+
+  // ----------------------------
+  // Fonctions dÃ©diÃ©es Ã  ScottV4
+  // ----------------------------
 
   unsigned int lectureDistance();
 
@@ -101,12 +110,11 @@ public:
 
   unsigned char lectureContact();
 
-
-
 private:
 
-  // Pin pour les moteurs pas-à-pas par défaut
+  int _pinScottServo= 3   ; // Pin servo pour ScottV4
 
+  // DÃ©finition des pins Ã  partir de la version ScottV4
   int _pinSwitchDroite = 4 ;
   int _pinSwitchGauche = 5 ;
   int _pinLigneDroite = A1 ;
@@ -115,28 +123,23 @@ private:
   int _pinLumiereGauche = A6 ;
   int _pinDistDroite = A2 ;
   int _pinDistGauche = A3 ;
-  int _pinIrEmetteur = 2 ;
-  int _pinServo = 3 ;
+  int _pinScottIrEmetteur = 2 ;
 
-   ScottSteppers *Steppers;
-
-  
-
-  //float DEG_TO_STEP(DEG_TO_RAD*RAD_TO_STEP)
-
-  unsigned int _distD = 0;
-  unsigned int _distG = 0;
-
-  int tpsEcoule = 0 ;
-  int tpsTop = 0 ;
-
-  //Variable capteur de distance
+  ScottSteppers *Steppers;
+  // Variable capteur de distance
   int _distDroite;
   int _distGauche;
-  
-  //Cst crayon
-  int _bas = -35;
-  int _haut = 10;
+
+  // Variable Crayon
+
+  // Version Scott
+  int _scottBas = -35; // A modifier
+  int _scottHaut = 10;
+
+  // Variables de calibration des deplacements
+  int _mmToStep = 0;
+  int _radToStep = 0;
+  int _deltaArc = 0;
 
   int servoAction = 0;
 

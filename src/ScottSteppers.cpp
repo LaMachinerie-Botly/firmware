@@ -1,27 +1,22 @@
 #include "ScottSteppers.h"
 
 /*****************************************************
- *      	    Méthodes et Constructeur             *
+ *      	    Méthodes et Constructeur               *
  *                   ScottSteppers                   *
  *                                                   *
  *****************************************************/
 
-
-
 ScottSteppers::ScottSteppers(){
-
-	SStepper droite(DroitB2, DroitA2, DroitB1, DroitA1);
-	SStepper gauche(GaucheB2, GaucheA2, GaucheB1, GaucheA1);
-	
-	_stepperD = droite;
-	_stepperG = gauche;
+    SStepper droite(ScottDroitB2, ScottDroitA2, ScottDroitB1, ScottDroitA1);
+    SStepper gauche(ScottGaucheB2, ScottGaucheA2, ScottGaucheB1, ScottGaucheA1);
+    _stepperD = droite;
+    _stepperG = gauche;
 }
 
-
-bool ScottSteppers::run(){
+bool ScottSteppers::run()
+{
 	uint8_t i;
-    bool ret = false;
-
+  bool ret = false;
 	if ( _stepperD.distanceToGo() != 0)
 	{
 		_stepperD.runSpeed();
@@ -32,13 +27,12 @@ bool ScottSteppers::run(){
 		_stepperG.runSpeed();
 		ret = true;
 	}
-
     return ret;
 }
 
 
 void ScottSteppers::runSpeedToPosition()
-{ 
+{
     while (run())
 	;
 }
@@ -51,7 +45,7 @@ void ScottSteppers::setPositions(){
 void ScottSteppers::moveTo(long absoluteD, long absoluteG){
 	// First find the stepper that will take the longest time to move
     float longestTime = 0.0;
-	
+
     uint8_t i;
 
 	long thisDistance = absoluteD - _stepperD.currentPosition();
@@ -59,8 +53,8 @@ void ScottSteppers::moveTo(long absoluteD, long absoluteG){
 
 	if (thisTime > longestTime)
 	    longestTime = thisTime;
-	
-	
+
+
 	thisDistance = absoluteG - _stepperG.currentPosition();
 	thisTime = abs(thisDistance) / _stepperG.maxSpeed();
 
@@ -70,19 +64,19 @@ void ScottSteppers::moveTo(long absoluteD, long absoluteG){
 
     if (longestTime > 0.0)
     {
-	// Now work out a new max speed for each stepper so they will all 
+	// Now work out a new max speed for each stepper so they will all
 	// arrived at the same time of longestTime
-	
+
 	thisDistance = absoluteD - _stepperD.currentPosition();
 	float thisSpeed = thisDistance / longestTime;
 	_stepperD.moveTo(absoluteD); // New target position (resets speed)
 	_stepperD.setSpeed(thisSpeed); // New speed
-	
+
 	thisDistance = absoluteG - _stepperG.currentPosition();
 	thisSpeed = thisDistance / longestTime;
 	_stepperG.moveTo(absoluteG); // New target position (resets speed)
 	_stepperG.setSpeed(thisSpeed); // New speed
-			
+
 	}
 }
 
@@ -90,12 +84,12 @@ void ScottSteppers::move(long relativeD, long relativeG){
 	//float thisSpeed = _stepperD.maxSpeed();
 	_stepperD.move(relativeD); // New target position (resets speed)
 	//_stepperD.setSpeed(thisSpeed); // New speed
-	
+
 	//thisSpeed = _stepperG.maxSpeed();
 	_stepperG.move(relativeG); // New target position (resets speed)
 	//_stepperG.setSpeed(thisSpeed); // New speed
 }
-	
+
 float ScottSteppers::getMaxSpeed(int i){
 	if(i == 1) return _stepperD.maxSpeed();
 	if(i == 2) return _stepperG.maxSpeed();
@@ -106,13 +100,13 @@ float ScottSteppers::getSpeed(int i){
 	if(i == 1) return _stepperD.speed();
 	if(i == 2) return _stepperG.speed();
 	return 0;
-}	
-	
-	
+}
+
+
 void ScottSteppers::setMaxSpeed(float vitesse){
 	setMaxSpeed(vitesse, vitesse);
 }
-	
+
 void ScottSteppers::setSpeed(float vitesse){
 	setSpeed(vitesse, vitesse);
 }
@@ -121,7 +115,7 @@ void ScottSteppers::setMaxSpeed(float vitesseDroite, float vitesseGauche){
 	_stepperD.setMaxSpeed(vitesseDroite);
 	_stepperG.setMaxSpeed(vitesseGauche);
 }
-	
+
 void ScottSteppers::setSpeed(float vitesseDroite, float vitesseGauche){
 	_stepperD.setSpeed(vitesseDroite);
 	_stepperG.setSpeed(vitesseGauche);
@@ -178,14 +172,14 @@ bool SStepper::runSpeed()
     if (!_stepInterval)
 	return false;
 
-    unsigned long time = micros();   
+    unsigned long time = micros();
     if (time - _lastStepTime >= _stepInterval){
 		if (_direction == DIRECTION_CW){
 			// Clockwise
 			_currentPos += 1;
 		}
 		else{
-			// Anticlockwise  
+			// Anticlockwise
 			_currentPos -= 1;
 		}
 		step(_currentPos);
@@ -285,7 +279,7 @@ void SStepper::computeNewSpeed()
     {
 	// Subsequent step. Works for accel (n is +_ve) and decel (n is -ve).
 	_cn = _cn - ((2.0 * _cn) / ((4.0 * _n) + 1)); // Equation 13
-	_cn = max(_cn, _cmin); 
+	_cn = max(_cn, _cmin);
     }
     _n++;
     _stepInterval = _cn;
@@ -386,31 +380,31 @@ void SStepper::step(long step)
 	case 0:    // 1000
 	    setOutputPins(0b0001);
             break;
-	    
+
         case 1:    // 1010
 	    setOutputPins(0b0101);
             break;
-	    
+
 	case 2:    // 0010
 	    setOutputPins(0b0100);
             break;
-	    
+
         case 3:    // 0110
 	    setOutputPins(0b0110);
             break;
-	    
+
 	case 4:    // 0100
 	    setOutputPins(0b0010);
             break;
-	    
+
         case 5:    //0101
 	    setOutputPins(0b1010);
             break;
-	    
+
 	case 6:    // 0001
 	    setOutputPins(0b1000);
             break;
-	    
+
         case 7:    //1001
 	    setOutputPins(0b1001);
             break;
@@ -431,10 +425,10 @@ void SStepper::setOutputPins(uint8_t mask)
 
 
 
-    
+
 // Prevents power consumption on the outputs
 void    SStepper::disableOutputs()
-{   
+{
     setOutputPins(0); // Handles inversion automatically
     if (_enablePin != 0xff)
     {
@@ -483,7 +477,7 @@ void SStepper::setPinsInverted(bool directionInvert, bool stepInvert, bool enabl
 }
 
 void SStepper::setPinsInverted(bool pin1Invert, bool pin2Invert, bool pin3Invert, bool pin4Invert, bool enableInvert)
-{    
+{
     _pinInverted[0] = pin1Invert;
     _pinInverted[1] = pin2Invert;
     _pinInverted[2] = pin3Invert;
@@ -519,7 +513,7 @@ void SStepper::runToNewPosition(long position)
 void SStepper::stop()
 {
     if (_speed != 0.0)
-    {    
+    {
 		long stepsToStop = (long)((_speed * _speed) / (2.0 * _acceleration)) + 1; // Equation 16 (+integer rounding)
 		if (_speed > 0)
 			move(stepsToStop);
@@ -533,12 +527,10 @@ bool SStepper::isRunning()
     return !(_speed == 0.0 && _targetPos == _currentPos);
 }
 
- 
 
- 
- 
- 
- 
+
+
+
+
+
  //Fin de la class SStepper
- 
- 

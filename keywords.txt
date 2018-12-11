@@ -1,4 +1,4 @@
-# Syntax Coloring Map Scott
+# Syntax Coloring Map Botly
 
 # Datatypes (KEYWORD1)
 

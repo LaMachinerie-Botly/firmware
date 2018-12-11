@@ -1,5 +1,5 @@
-#ifndef ScottSteppers_h
-#define ScottSteppers_h
+#ifndef BotlySteppers_h
+#define BotlySteppers_h
 
 #include <stdlib.h>
 #if ARDUINO >= 100
@@ -11,18 +11,18 @@
 
 #undef round
 
-
 #define MULTISTEPPER_MAX_STEPPERS 2
 
-#define GaucheB2  6       // 
-#define GaucheB1  7      //  Pin Moteur Gauche
-#define GaucheA2  8     //
-#define GaucheA1  9    //
-
-#define DroitB2  10      // 
-#define DroitB1  11     //  Pin Moteur Droit
-#define DroitA2  12    // 
-#define DroitA1  13   // 
+// // PIN MOTEUR SCOTT ( A partir de la version 4)
+// #define ScottGaucheB2  6
+// #define ScottGaucheB1  7
+// #define ScottGaucheA2  8
+// #define ScottGaucheA1  9
+//
+// #define ScottDroitB2  10
+// #define ScottDroitB1  11
+// #define ScottDroitA2  12
+// #define ScottDroitA1  13
 
 
 /*****************************************************
@@ -192,11 +192,11 @@ protected:
 
     virtual void   step(long step);
 
-   
+
     boolean _direction; // 1 == CW
 
 private:
-   
+
     /// Arduino pin number assignments for the 2 or 4 pins required to interface to the
     /// stepper motor or driver
     uint8_t        _pin[4];
@@ -267,36 +267,41 @@ private:
  *****************************************************/
 
 
- 
+
 class ScottSteppers{
 public:
 
 	ScottSteppers();
-	
+
 	bool run();
-	
+
 	void move(long relativeD, long relativeG);
 	void moveTo(long absoluteD, long absoluteG);
-	
+
 	void runSpeedToPosition();
 	void setPositions();
-	
+
 	void setSpeed(float vitesse);
 	void setSpeed(float vitesseDroite, float vitesseGauche);
 
 	void setMaxSpeed(float vitesse);
 	void setMaxSpeed(float vitesseDroite, float vitesseGauche);
-	
+
 	float getMaxSpeed(int i);
 	float getSpeed(int i);
-	
+
 	void disable();
 	void enable();
 
 private:
 
-    SStepper _stepperD;
+  SStepper _stepperD;
 	SStepper _stepperG;
+
+  // PIN MOTEUR SCOTT ( A partir de la version 4)
+  const uint8_t ScottGaucheB2 = 6, ScottGaucheB1 = 7, ScottGaucheA2 = 8, ScottGaucheA1 = 9 ;
+  const uint8_t ScottDroitB2 = 10, ScottDroitB1 = 11, ScottDroitA2 = 12, ScottDroitA1 = 13 ;
+
 };
 
 
