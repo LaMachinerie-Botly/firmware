@@ -31,11 +31,3 @@ leverCrayon		KEYWORD2
 poserCrayon		KEYWORD2
 bougerCrayon	KEYWORD2
 lectureDistance	KEYWORD2
-lectureLigne	KEYWORD2
-lectureLumiere	KEYWORD2
-lectureContact	KEYWORD2
-
-# Constants (LITERAL1)
-
-ORIGINAL 		LITERAL1
-DIY 			LITERAL1
