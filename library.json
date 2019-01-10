@@ -1,0 +1,34 @@
+{
+  "name": "Botly",
+  "keywords": "robot,drawing,arduino,lilypad,machinerie",
+  "description": "Arduino Library for the Botly robot developped by La Machinerie",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/LaMachinerie/Botly-Library"
+  },
+  "authors":
+  [
+    {
+      "name": "La Machinerie",
+      "email": "contact@lamachinerie.org",
+      "url": "http://lamachinerie.org",
+      "maintainer": true
+    },
+    {
+      "name": "Adrien BRACQ",
+      "email": "adrien@lamachinerie.org"
+    },
+    {
+      "name": "Jules TOPART",
+      "email": "jules@lamachinerie.org"
+    }
+  ],
+  "dependencies":
+  {
+
+  },
+  "version": "2.0.3",
+  "frameworks": "arduino",
+  "platforms": "lilypad"
+}
