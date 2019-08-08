@@ -7,6 +7,8 @@ Botly::Botly(){
 
 void Botly::init()
 {
+
+	Serial.begin(9600);
 	analogReference(INTERNAL); //reference analogique 2.56V
 
 	crayon.attach(_pinBotlyServo);
@@ -15,18 +17,22 @@ void Botly::init()
 	pinMode(_pinBotlyIrEmetteur, OUTPUT);
 	digitalWrite(_pinBotlyIrEmetteur, LOW);
 
-	setCalibration(BOTLY_MM_TO_STEP, BOTLY_RAD_TO_STEP);
+	getCalibration();
 	_deltaArc = BOTLY_DELTA_ARC;
 
-	//Jouer un son de demarrage
-	delay(500);
-	tone(_pinBuzzer, 1397-33, 100);
-	delay(110);
-	tone(_pinBuzzer, 1568-33, 250);
-	delay(300);
-	tone(_pinBuzzer, 2093-33, 500);
-	delay(500);
-	
+	// Detecte si une nouvelle version du code uploadé
+	// Atention : ne fonctionne pas encore.
+	// Utilisé uniquement à la recompilation de la library
+	if(__TIME__[0] == '?') _buildSec = 99;
+	else _buildSec = ((__TIME__[6] - '0') * 10 + __TIME__[7] - '0') ;
+
+   if (EEPROM.read(_timeAddress)!=_buildSec)
+   {
+		 EEPROM.update(_timeAddress, _buildSec);
+		 musicNewProgramm();
+   }
+	else musicBegin();
+
 	Steppers->setMaxSpeed(900.0);
 	Steppers->setSpeed(300.0);
 	Steppers->enable();
@@ -38,8 +44,42 @@ void Botly::run(){
 }
 
 void Botly::setCalibration(int distance, int rotation){
-	_mmToStep = distance;
+
+	// Mise à jour des variables de calibration
+	_mmToStep  = distance;
 	_radToStep = rotation;
+
+	// Sauvegarde des paramètres dans l'EEPROM
+	EEPROM.update(_distanceAddress, distance >> 8);
+	EEPROM.update(_distanceAddress+1, distance & 255);
+
+	EEPROM.update(_rotationAddress, rotation >> 8);
+	EEPROM.update(_rotationAddress+1, rotation & 255);
+
+	// Sauvegarde du changement de la calibration
+	EEPROM.update(_checkNewAddress, NEW_CALIBRATION);
+}
+
+void Botly::getCalibration(){
+
+	// Si une nouvelle valeur a été chargée dans le robot prendre ces valeurs
+	if (EEPROM.read(_checkNewAddress) == NEW_CALIBRATION)
+	{
+		_mmToStep  = EEPROM.read(_distanceAddress) << 8 | EEPROM.read(_distanceAddress+1);
+		_radToStep = EEPROM.read(_rotationAddress) << 8 | EEPROM.read(_rotationAddress+1);
+	}
+	else
+	{
+		_mmToStep  = BOTLY_MM_TO_STEP 	;
+		_radToStep = BOTLY_RAD_TO_STEP 	;
+	}
+}
+
+void Botly::factoryCalibration(){
+	// revenir à la calibration usine
+	EEPROM.update(_checkNewAddress, 0);
+	_mmToStep  = BOTLY_MM_TO_STEP 	;
+	_radToStep = BOTLY_RAD_TO_STEP 	;
 }
 
 void Botly::setSpeed(float vitesse){
@@ -87,6 +127,40 @@ void Botly::turnGo(float angle, long ligne){
   }
 }
 
+void Botly::musicBegin(){
+
+	delay(500);
+  tone(_pinBuzzer, 1364, 100);
+	delay(110);
+	tone(_pinBuzzer, 1535, 250);
+	delay(300);
+	tone(_pinBuzzer, 2060, 500);
+	delay(500);
+
+}
+
+void Botly::musicNewProgramm(){
+
+	tone(_pinBuzzer, 1364, 500);
+  delay(400);
+  tone(_pinBuzzer, 1364, 80);
+  delay(100);
+  tone(_pinBuzzer, 1364, 80);
+  delay(100);
+  tone(_pinBuzzer, 2060, 800);
+  delay(800);
+}
+
+void Botly::musicEnd(){
+
+	delay(500);
+  tone(_pinBuzzer, 1976-33, 500);
+	delay(500);
+	tone(_pinBuzzer, 1480-33, 100);
+	delay(110);
+	tone(_pinBuzzer, 1568-33, 800);
+	delay(800);
+}
 
 void Botly::avant(long pas){
 	Steppers->moveTo(-pas, pas);
@@ -205,9 +279,12 @@ void Botly::bougerCrayon(int angle)
 	crayon.write(angle);
 }
 
-//--------------------------------------------
-// Fonctions pour la version BOTLY V1 du robot
-//--------------------------------------------
+void Botly::finProgramme()
+{
+	stop();
+	musicEnd();
+	while(true);
+}
 
 void Botly::isIRDataReceived(){
 	if (irrecv.decode(&results)) {

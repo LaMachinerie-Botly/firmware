@@ -11,12 +11,12 @@
 * @date         2018-11-22
 * @author       Jules T. / Adrien B. / Alexandre P.
 * @entreprise   La Machinerie
-* @version      V2.0.3
+* @version      V2.1.0
 */
 
 #ifndef Botly_h
 #define Botly_h
-#define LIBRARY_VERSION	2.0.3
+#define LIBRARY_VERSION	2.1.0
 
 /*********************************
      Constantes de calibrations
@@ -25,6 +25,7 @@
 #define BOTLY_MM_TO_STEP 345
 #define BOTLY_RAD_TO_STEP 1861
 #define BOTLY_DELTA_ARC 47
+#define NEW_CALIBRATION 66
 
 #define DIR_RIGHT 1
 #define DIR_LEFT 2
@@ -32,9 +33,11 @@
 /*********************
 	 Dependances
 *********************/
-#include <Servo.h>
+
 #include <Arduino.h>
 
+#include <Servo.h>
+#include <EEPROM.h>
 #include <IRremote.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
@@ -61,6 +64,10 @@ public:
   void init();
 
   void setCalibration(int distance, int rotation);
+
+  void getCalibration();
+
+  void factoryCalibration();
 
   void run();
 
@@ -110,9 +117,13 @@ public:
 
   void bougerCrayon(int angle);
 
-  // ----------------------------
-  // Fonctions dédiées à BotlyV1
-  // ----------------------------
+  void finProgramme();
+
+  void musicBegin();
+
+  void musicNewProgramm();
+
+  void musicEnd();
 
   void isIRDataReceived();
 
@@ -144,16 +155,24 @@ private:
   int _distGauche;
 
   // Variable Crayon
-  // Version Botly
   int _botlyBas = 90;
   int _botlyHaut = 20;
 
   // Variables de calibration des deplacements
-  int _mmToStep = 0;
-  int _radToStep = 0;
+  int _mmToStep = BOTLY_MM_TO_STEP ;
+  int _radToStep = BOTLY_RAD_TO_STEP ;
   int _deltaArc = 0;
 
   int servoAction = 0;
+
+  // gestion de _version
+  byte _buildSec = 0;
+
+  // Adresses de stockage EEPROM
+  byte _timeAddress = 0;
+  byte _distanceAddress = 5;
+  byte _rotationAddress = 10;
+  byte _checkNewAddress = 15;
 
 };
 #endif
