@@ -204,6 +204,7 @@ void Botly::stop(long temps){
 //Battery Power save !!!!
 void Botly::stop(){
 	Steppers->disable();
+	while(true);
 }
 
 void Botly::tournerGauche(long angleDegree){
