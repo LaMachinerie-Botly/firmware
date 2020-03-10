@@ -137,11 +137,15 @@ void Wally::arriere(long distance){
 //Left pulley
 void Wally::gauche(long pas){
   Steppers->moveTo(0, pas);
+  Steppers->runSpeedToPosition();//Blockling...
+	Steppers->setPositions();
 }
 
 //Right pulley
 void Wally::droite(long pas){
   Steppers->moveTo(pas, 0);
+  Steppers->runSpeedToPosition();//Blockling...
+	Steppers->setPositions();
 }
 
 //Battery Power save !!!!
@@ -175,13 +179,20 @@ void Wally::execRequest(int input){
 		break;
 	case 0x240A25D:
 		/* F */
-		gauche(50);
+		gauche(-50);
 		break;
 	case 0x24030CF:
 		/* G */
 		droite(50);
 		break;
-
+	case 0x24058A7:
+		/* H */
+		gauche(50);
+		break;
+	case 0x240708F:
+		/* I */
+		droite(-50);
+		break;
 	default:
 		break;
 	}
