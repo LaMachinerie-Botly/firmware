@@ -179,19 +179,19 @@ void Wally::execRequest(int input){
 		break;
 	case 0x240A25D:
 		/* F */
-		gauche(-50);
+		gauche(-500);
 		break;
 	case 0x24030CF:
 		/* G */
-		droite(50);
+		droite(500);
 		break;
 	case 0x24058A7:
 		/* H */
-		gauche(50);
+		gauche(500);
 		break;
 	case 0x240708F:
 		/* I */
-		droite(-50);
+		droite(-500);
 		break;
 	default:
 		break;
