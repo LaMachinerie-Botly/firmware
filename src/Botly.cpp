@@ -9,6 +9,7 @@ void Botly::init()
 {
 
 	Serial.begin(9600);
+	initIRcom();
 	analogReference(INTERNAL); //reference analogique 2.56V
 
 	crayon.attach(_pinBotlyServo);
@@ -289,8 +290,8 @@ void Botly::finProgramme()
 
 void Botly::isIRDataReceived(){
 	if (irrecv.decode(&results)) {
-    Serial.println(results.value, HEX);
-    irrecv.resume(); // Receive the next value
+		Serial.println(results.value, HEX);
+		irrecv.resume(); // Receive the next value
     }
 }
 

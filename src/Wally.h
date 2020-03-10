@@ -4,24 +4,33 @@
 #include "Botly.h"
 #include "Geometry.h"
 
+const float w = 500, 
+            paperGap = 200,
+            paperSize = 500;
+
 class Wally : public Botly{
-  Wally(){}
+public:
+  Wally() : cartesian(GVector2D(0,0,0)){}
 
   void origin();
-  void avant(long pas);
-  void arriere(long pas);
-  void gauche(long pas);
-  void droite(long pas);
+  void stop         (long);
+  void avant        (long);
+  void arriere      (long);
+  void gauche       (long);
+  void droite       (long);
 
-  void avancer(float distance);
-  void reculer(float distance);
-  void tournerDroite(float angle);
-  void tournerGauche(float angle);
+  void avancer      (float);
+  void reculer      (float);
+  void tournerDroite(float);
+  void tournerGauche(float);
 
-  void Botly::turnGoDegree(float angle, long ligne);
-  void Botly::turnGo(float angle, long ligne)
+  void execRequest  (int);
+  void isIRDataReceived();
+
+  void turnGoDegree (float angle, float ligne);
+  void turnGo       (float angle, float ligne);
   
 protected :
-  GVector2z cartesian, polar;
+  GVector2D cartesian, polar;
 };
 #endif

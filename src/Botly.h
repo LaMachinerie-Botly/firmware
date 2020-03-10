@@ -54,8 +54,7 @@ public:
   IRsend irsend;
   decode_results results;
 
-  int pin = 9;
-  IRrecv irrecv = new IRrecv(pin);
+  IRrecv irrecv = IRrecv(9);
 
   Botly();
 

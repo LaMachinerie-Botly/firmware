@@ -1,21 +1,14 @@
 #include <Arduino.h>
 
-static class GMath{
-    const double PI = 3.14159265358;
-	const double degToRad = PI/180;
-	const double radToDeg = 180/PI; 
-};
-
-template <class T>
-
 class GVector2D{
 public:
 
-    T x, y;
+    float x, y, z;
 
-    GVector2D(): x(0), y(0){}
-    GVector2D(T _x, T _y) : x(_x), y(_y){}
-    GVector2D(const GVector2D& v) : x(v.x), y(v.y) {}
+    GVector2D(): x(0), y(0), z(0){}
+    GVector2D(float _x, float _y) : x(_x), y(_y), z(0){}
+    GVector2D(float _x, float _y, float _z) : x(_x), y(_y),z(_z){}
+    GVector2D(const GVector2D& v) : x(v.x), y(v.y), z(v.z) {}
 
     GVector2D& operator=(const GVector2D& v) {
 		x = v.x;
@@ -75,7 +68,7 @@ public:
 		return *this;
 	}
 
-    void set(T x, T y) {
+    void set(float x, float y) {
 		this->x = x;
 		this->y = y;
 	}
@@ -90,7 +83,7 @@ public:
 	}
 
     void rotateDegree(double deg) {
-		double theta = deg / 180.0 * GMath.PI;
+		double theta = deg / 180.0 * PI;
 		double c = cos(theta);
 		double s = sin(theta);
 		double tx = x * c - y * s;
@@ -115,7 +108,7 @@ public:
 	}
 
 	float heading() const {
-		GVector2D cpy = this;
+		GVector2D cpy = *this;
 		cpy.normalize();
 		return acos(x);
 	}
@@ -137,19 +130,3 @@ public:
 		return (v1.x * v2.y) - (v1.y * v2.x);
 	}
 };
-
-typedef GVector2D<float> GVector2d;
-typedef GVector2D<double> GVector2f;
-
-
-class GVector2z : public GVector2D{
-public :
-	GVector2z() : GVector2D(), theta(0){}
-    GVector2z(T _x, T _y) : GVector2D(_x, _y), theta(0){}
-	GVector2z(T _x, T _y, T theta) : GVector2D(_x, _y), theta(theta){}
-    GVector2z(const GVector2D& v) : GVector2D(v), theta(0) {}
-	GVector2z(const GVector2z& v) : GVector2D(v.x, v.y), theta(v.theta) {}
-
-private :
-	T theta;
-}

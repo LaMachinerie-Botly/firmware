@@ -4,7 +4,7 @@
  * 			Kinematics			 *
  *********************************/  
   
-GVector2z forward(GVector2z polar){
+GVector2D forward(GVector2D polar){
   float La = polar.x;
   float Lb = polar.y;
   
@@ -13,22 +13,23 @@ GVector2z forward(GVector2z polar){
   float beta = acos((Lb*Lb+4*w*w-(La*La))/(2*Lb*2*w));
   
   //Real
-  return new GVector2z(Lb * cos(beta) - w, Lb * sin(beta), polar.z);
+  GVector2D result = GVector2D(Lb * cos(beta) - w, Lb * sin(beta), polar.z);
+  return result;
 }
 
-GVector2z backward(GVector2z pos){
- float x,y;
- 
- x = pos.x;
- y = pos.y;
- 
- //Theorical
- float alpha = atan(y / (w-x)); 
- float beta  = atan(y / (w+x)); 
- float dLa = (y / sin(alpha));
- float dLb = (y / sin(beta ));
+GVector2D backward(GVector2D pos){
+  float x,y;
 
- return new GVector2z(dLa, dLb, pos.z);
+  x = pos.x;
+  y = pos.y;
+
+  //Theorical
+  float alpha = atan(y / (w-x)); 
+  float beta  = atan(y / (w+x)); 
+  float dLa = (y / sin(alpha));
+  float dLb = (y / sin(beta ));
+  GVector2D result = GVector2D(dLa, dLb, pos.z);
+ return result;
 }
 
 void Wally::origin(){
@@ -39,16 +40,16 @@ void Wally::origin(){
     polar = backward(cartesian);
 }
 
-void Wally::avancer(long distance){
-  turnGoDegree(0, distanceMillimeter);
+void Wally::avancer(float distance){
+  turnGoDegree(0, distance);
 }
 
-void Wally::reculer(long distance){
-  turnGoDegree(0, -distanceMillimeter);
+void Wally::reculer(float distance){
+  turnGoDegree(0, -distance);
 }
 
 void Wally::tournerDroite(float angleDegree){
-  angle = GMath.degToRad * angle;
+  float angle = DEG_TO_RAD * angleDegree;
   polar.z -= angle;
   if(polar.z >= 2*PI){
     polar.z -= 2*PI;
@@ -61,7 +62,7 @@ void Wally::tournerDroite(float angleDegree){
 }
 
 void Wally::tournerGauche(float angleDegree){
-  angle = GMath.degToRad * angle;
+  float angle = DEG_TO_RAD * angleDegree;
   polar.z += angle;
     if(polar.z >= PI){
     polar.z -= 2*PI;
@@ -73,12 +74,12 @@ void Wally::tournerGauche(float angleDegree){
   cartesian.z = polar.z;
 }
 
-void Wally::turnGoDegree(float angle, long ligne){
+void Wally::turnGoDegree(float angle, float ligne){
   angle = angle * DEG_TO_RAD ; // Passage en radians
   turnGo(angle, ligne);
 }
 
-void Wally::turnGo(float angle, long ligne){
+void Wally::turnGo(float angle, float ligne){
 
   if(angle > 0 && angle < PI){
     tournerGauche( int( (angle * _radToStep)) );
@@ -105,11 +106,11 @@ void Wally::turnGo(float angle, long ligne){
 }
 
 
-void Wally::avant(long pas){
+void Wally::avant(long distance){
   //ABS
   cartesian.x -= cos(polar.z)*distance;
   cartesian.y += sin(polar.z)*distance;
-  GVector2z temp = polar;
+  GVector2D temp = polar;
   polar = backward(cartesian);
 
   temp = polar - temp;
@@ -119,11 +120,11 @@ void Wally::avant(long pas){
 	Steppers->setPositions();
 }
 
-void Wally::arriere(long pas){
+void Wally::arriere(long distance){
   //ABS
   cartesian.x -= cos(polar.z)*distance;
   cartesian.y += sin(polar.z)*distance;
-  GVector2z temp = polar;
+  GVector2D temp = polar;
   polar = backward(cartesian);
 
   temp = polar - temp;
@@ -133,15 +134,63 @@ void Wally::arriere(long pas){
 	Steppers->setPositions();
 }
 
+//Left pulley
 void Wally::gauche(long pas){
-//Nothing to see here
+  Steppers->moveTo(0, pas);
 }
 
+//Right pulley
 void Wally::droite(long pas){
-//Nothing to see here
+  Steppers->moveTo(pas, 0);
 }
 
 //Battery Power save !!!!
 void Wally::stop(long temps){
   delay(temps);
+}
+
+void Wally::execRequest(int input){
+	switch (input)
+	{
+	case 0x24000FF:
+		/* A */
+		avancer(50);
+
+		break;
+	case 0x24040BF:
+		/* B */
+		tournerDroite(90);
+		break;
+	case 0x240807F:
+		/* C */
+		reculer(10);
+		break;
+	case 0x240C03F:
+		/* D */
+		tournerGauche(90);
+		break;
+	case 0x24022DD:
+		/* E */
+		origin();
+		break;
+	case 0x240A25D:
+		/* F */
+		gauche(50);
+		break;
+	case 0x24030CF:
+		/* G */
+		droite(50);
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Wally::isIRDataReceived(){
+	if (irrecv.decode(&results)) {
+		Serial.println(results.value, HEX);
+		execRequest(results.value);
+		irrecv.resume(); // Receive the next value
+    }
 }
