@@ -59,8 +59,6 @@ public:
 
   Botly();
 
-  Botly(int version);
-
   void init();
 
   void setCalibration(int distance, int rotation);
@@ -139,7 +137,7 @@ public:
 
   void sleepWakeup();
 
-private:
+protected:
 
   int _pinBotlyServo= 11  ; // Pin servo pour BotlyV1
 
@@ -148,6 +146,8 @@ private:
   int _pinBotlyIrEmetteur = 13 ;
   int _pinMesureBatterie = A5;
   int _pinBuzzer = 7;
+
+  //Stepper object
   BotlySteppers *Steppers;
 
   // Variable capteur de distance

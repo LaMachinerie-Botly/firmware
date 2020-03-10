@@ -1,9 +1,9 @@
 #include "Botly.h"
 
-
 Botly::Botly(){
 	Steppers = new BotlySteppers();
 }
+
 
 void Botly::init()
 {
@@ -130,7 +130,7 @@ void Botly::turnGo(float angle, long ligne){
 void Botly::musicBegin(){
 
 	delay(500);
-  tone(_pinBuzzer, 1364, 100);
+    tone(_pinBuzzer, 1364, 100);
 	delay(110);
 	tone(_pinBuzzer, 1535, 250);
 	delay(300);
@@ -141,7 +141,7 @@ void Botly::musicBegin(){
 
 void Botly::musicNewProgramm(){
 
-	tone(_pinBuzzer, 1364, 500);
+  tone(_pinBuzzer, 1364, 500);
   delay(400);
   tone(_pinBuzzer, 1364, 80);
   delay(100);

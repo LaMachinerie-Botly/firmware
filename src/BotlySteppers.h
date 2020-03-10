@@ -262,8 +262,8 @@ private:
 };
 
 /*****************************************************
- *      	    Déifinition de la classe             *
- *                   BotlySteppers                   *
+ *      	    Déifinition de la classe               *
+ *                  BotlySteppers                    *
  *                                                   *
  *****************************************************/
 
