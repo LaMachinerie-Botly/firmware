@@ -33,6 +33,7 @@ public:
   void turnGoDegree (float angle, float ligne);
   void turnGo       (float angle, float ligne);
   
+  
 protected :
   GVector2D cartesian, polar;
 };
