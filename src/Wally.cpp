@@ -3,7 +3,8 @@
 /*********************************
  * 			Kinematics			 *
  *********************************/  
-  
+bool _originSet = false;
+
 GVector2D forward(GVector2D polar){
   float La = polar.x;
   float Lb = polar.y;
@@ -32,12 +33,20 @@ GVector2D backward(GVector2D pos){
  return result;
 }
 
+
+void Wally::init() {    
+  Botly::init();
+  _originSet = false;
+  while(!_originSet) isIRDataReceived();
+}
+
 void Wally::origin(){
     polar.x = polar.y = 0;
     cartesian.z = polar.z = PI/2;
     cartesian.x = 0;
     cartesian.y = paperGap + paperSize/2;
     polar = backward(cartesian);
+    _originSet = true;
 }
 
 void Wally::avancer(float distance){
@@ -54,11 +63,18 @@ void Wally::tournerDroite(float angleDegree){
   if(polar.z >= 2*PI){
     polar.z -= 2*PI;
   }
-  if(polar.z <= -2*PI){
+  if(polar.z < 0){
     polar.z += 2*PI;
   }
   
   cartesian.z = polar.z;
+  
+  if(polar.z >= 0 && polar.z <= PI/2) tone(_pinBuzzer, 1046,200);
+  else if(polar.z > PI/2 && polar.z <= PI) tone(_pinBuzzer, 1318,200);
+  else if(polar.z > PI && polar.z <= 3*PI/2) tone(_pinBuzzer, 1568,200);
+  else if(polar.z > 3*PI/2 && polar.z <= 2*PI) tone(_pinBuzzer, 1975,200);
+
+
 }
 
 void Wally::tournerGauche(float angleDegree){
@@ -82,13 +98,13 @@ void Wally::turnGoDegree(float angle, float ligne){
 void Wally::turnGo(float angle, float ligne){
 
   if(angle > 0 && angle < PI){
-    tournerGauche( int( (angle * _radToStep)) );
+    tournerGauche( angle );
   }
   else if( angle >= PI ){
-	  tournerDroite(int( ( (angle-PI) * _radToStep)) );
+	  tournerDroite( 2*PI - angle );
   }
   else if( angle < 0 ){
-    tournerDroite(int( -( angle * _radToStep)) );
+    tournerDroite( - angle );
   }
   else{
     stop(100);
@@ -148,59 +164,61 @@ void Wally::droite(long pas){
 	Steppers->setPositions();
 }
 
-//Battery Power save !!!!
 void Wally::stop(long temps){
-  delay(temps);
+  if(temps == 0) while(true) isIRDataReceived();
+  else delay(temps);
 }
 
 void Wally::execRequest(int input){
 	switch (input)
 	{
-	case 0x24000FF:
-		/* A */
-		avancer(50);
+    case 0x24000FF:
+      /* A */
+      avancer(50);
 
-		break;
-	case 0x24040BF:
-		/* B */
-		tournerDroite(90);
-		break;
-	case 0x240807F:
-		/* C */
-		reculer(10);
-		break;
-	case 0x240C03F:
-		/* D */
-		tournerGauche(90);
-		break;
-	case 0x24022DD:
-		/* E */
-		origin();
-		break;
-	case 0x240A25D:
-		/* F */
-		gauche(-500);
-		break;
-	case 0x24030CF:
-		/* G */
-		droite(500);
-		break;
-	case 0x24058A7:
-		/* H */
-		gauche(500);
-		break;
-	case 0x240708F:
-		/* I */
-		droite(-500);
-		break;
-	default:
-		break;
+      break;
+    case 0x24040BF:
+      /* B */
+      tournerDroite(90);
+      break;
+    case 0x240807F:
+      /* C */
+      reculer(10);
+      break;
+    case 0x240C03F:
+      /* D */
+      tournerGauche(90);
+      break;
+    case 0x24022DD:
+      /* E */
+      origin();
+      break;
+    case 0x240A25D:
+      /* F */
+      gauche(-500);
+      break;
+    case 0x24030CF:
+      /* G */
+      droite(500);
+      break;
+    case 0x24058A7:
+      /* H */
+      gauche(500);
+      break;
+    case 0x240708F:
+      /* I */
+      droite(-500);
+      break;
+    default:
+    tone(_pinBuzzer, 440, 100);
+      break;
 	}
 }
 
 void Wally::isIRDataReceived(){
 	if (irrecv.decode(&results)) {
-		Serial.println(results.value, HEX);
+		//Serial.println(results.value, HEX);
+    tone(_pinBuzzer, 800, 100);
 		execRequest(results.value);
 		irrecv.resume(); // Receive the next value
     }

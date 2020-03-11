@@ -8,12 +8,15 @@ const float w = 500,
             paperGap = 200,
             paperSize = 500;
 
+extern bool _originSet;
+
 class Wally : public Botly{
 public:
   Wally() : cartesian(GVector2D(0,0,0)){}
 
+  void init();
   void origin();
-  void stop         (long);
+  void stop         (long temps = 0);
   void avant        (long);
   void arriere      (long);
   void gauche       (long);

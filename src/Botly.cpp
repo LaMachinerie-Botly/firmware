@@ -32,10 +32,10 @@ void Botly::init()
 		 EEPROM.update(_timeAddress, _buildSec);
 		 musicNewProgramm();
    }
-	else musicBegin();
+	//else musicBegin();
 
-	Steppers->setMaxSpeed(900.0);
-	Steppers->setSpeed(300.0);
+	Steppers->setMaxSpeed(500.0); //900
+	Steppers->setSpeed(200.0); //300
 	Steppers->enable();
 
 }
