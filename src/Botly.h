@@ -16,7 +16,7 @@
 
 #ifndef Botly_h
 #define Botly_h
-#define LIBRARY_VERSION	2.2.0
+#define LIBRARY_VERSION	2.5.0
 
 /*********************************
      Constantes de calibrations
