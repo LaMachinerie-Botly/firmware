@@ -287,6 +287,8 @@ void Botly::finProgramme()
 	while(true);
 }
 
+//TODO
+/*
 void Botly::isIRDataReceived(){
 	if (irrecv.decode(&results)) {
     Serial.println(results.value, HEX);
@@ -313,8 +315,8 @@ bool Botly::proximite(int ite, int trigger)
 		delay(20);						// Attendre avant une lecture
 
 		// Generation des pulsation à 38kHz
-		/* Le temps à l'etat haut est diminué afin de limiter
-		la portée de la detection du capteur */
+		// Le temps à l'etat haut est diminué afin de limiter
+		// la portée de la detection du capteur 
 
 		for(int i = 0; i <= 31; i++)
 		{
@@ -331,6 +333,8 @@ bool Botly::proximite(int ite, int trigger)
 	}
   return (validDetection>=trigger);
 }
+
+*/
 
 /*Cette fonction mesure la valeur analogique
 La référence interne est de 2.56V peu importe la tension
@@ -361,6 +365,7 @@ void Botly::sleepNow()
 	 * SLEEP_MODE_STANDBY
 	 * SLEEP_MODE_PWR_DOWN -the most power savings
 	 */
+
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode is set here
 	sleep_enable(); // enables the sleep in mcucr register,safety bit
 	power_all_disable(); //low power consumption
@@ -386,7 +391,8 @@ void Botly::sleepWakeup()
 	 * SLEEP_MODE_PWR_DOWN -the most power savings
 	 */
 
-	attachInterrupt(0, pin2_isr,LOW );//wake up on interrupt pin 2 or 3
+	//TODO IR dependent
+	//attachInterrupt(0, pin2_isr,LOW );//wake up on interrupt pin 2 or 3
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode
 	cli(); //clear interrupts
 	sleep_enable(); // enables sleep bit in mcucr register, safety pin

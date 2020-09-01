@@ -16,7 +16,7 @@
 
 #ifndef Botly_h
 #define Botly_h
-#define LIBRARY_VERSION	2.1.0
+#define LIBRARY_VERSION	2.2.0
 
 /*********************************
      Constantes de calibrations
@@ -38,24 +38,33 @@
 
 #include <Servo.h>
 #include <EEPROM.h>
+
+/* Desactivated Incompatibilty with latest version of IRremote
 #include <IRremote.h>
+*/
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 
+
 #include "BotlySteppers.h"
 
-void pin2_isr();
+//void pin2_isr();
 
 class Botly{
 public:
 
   Servo crayon;
-  IRsend irsend;
-  decode_results results;
 
+  //TODO
+  //IRsend irsend;
+  //decode_results results;
+
+  //TODO
+  /*
   int pin = 9;
   IRrecv irrecv = new IRrecv(pin);
+  */
 
   Botly();
 
@@ -125,6 +134,8 @@ public:
 
   void musicEnd();
 
+//TODO
+/* IR dependent
   void isIRDataReceived();
 
   void initIRcom();
@@ -132,6 +143,7 @@ public:
   void sonyCode(byte data);
 
   bool proximite(int i = 10, int seuil = 5);
+*/
 
   int mesureBatterie();
 
